@@ -11,5 +11,6 @@ public class PurrInPerilEditorTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_1;
 		ExtraModuleNames.Add("PurrInPeril");
+		ExtraModuleNames.Add("FirstPersonTemplate");
 	}
 }
