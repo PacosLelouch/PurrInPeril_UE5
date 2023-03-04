@@ -7,5 +7,5 @@
 APurrInPerilAnimalPawn::APurrInPerilAnimalPawn(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
-
+    BoxCollider->SetCollisionProfileName(UCollisionProfile::Pawn_ProfileName);
 }

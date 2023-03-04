@@ -10,5 +10,12 @@ APurrInPerilPawnBase::APurrInPerilPawnBase(const FObjectInitializer& ObjectIniti
     BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
     BoxCollider->SetupAttachment(RootComponent);
 
+	BoxCollider->SetCollisionProfileName(UCollisionProfile::BlockAllDynamic_ProfileName);
+
+	BoxCollider->CanCharacterStepUpOn = ECB_No;
+	BoxCollider->SetShouldUpdatePhysicsVolume(true);
+	BoxCollider->SetCanEverAffectNavigation(false);
+	BoxCollider->bDynamicObstacle = true;
+
     CustomMovement = GetCharacterMovement<UPurrInPerilMovementComponent>();
 }
