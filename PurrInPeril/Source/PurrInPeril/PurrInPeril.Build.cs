@@ -13,16 +13,26 @@ public class PurrInPeril : ModuleRules
 			"CoreUObject", 
 			"Engine", 
 			"InputCore", 
+			"Slate", 
+			"SlateCore", 
 			"UMG", 
 			"HeadMountedDisplay", 
-			"EnhancedInput" 
+			"EnhancedInput", 
+			"Json", 
+			"JsonUtilities",
+			"AIModule", 
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
+		PrivateIncludePaths.AddRange(new string[]
+		{
+			"PurrInPeril/MainLevel", 
+		});
+
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-		
+
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 
