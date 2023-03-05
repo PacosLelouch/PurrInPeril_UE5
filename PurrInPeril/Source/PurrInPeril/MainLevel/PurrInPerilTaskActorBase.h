@@ -28,6 +28,7 @@ public:
 	virtual UPurrInPerilInteractableComponent* GetInteractableComponent_Implementation() override;
 	//~ End IInteractableActorInterface.
 
+	//~ Begin overlap.
 	// declare overlap begin function.
 	UFUNCTION()
 	void OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor);
@@ -55,6 +56,18 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_OnOverlapEnd(AActor* OverlappedActor, AActor* OtherActor);
 	//void BP_OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	//~ End overlap.
+
+	//~ Begin interaction.
+	UFUNCTION(BlueprintCallable)
+	void DoInteraction(AController* Controller);
+
+	virtual void DoInteraction_Implementation(AController* Controller);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_DoInteraction(AController* Controller);
+	//~ End interaction.
+
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilInteractableComponent* InteractableComponent = nullptr;
@@ -64,7 +77,7 @@ public:
 
 	// For extension to multi-player, make a map.
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
-	TMap<APurrInPerilMainPlayerController*, UUserWidget*> PlayerToInteractTipsWidgets;
+	TMap<AController*, UUserWidget*> PlayerToInteractTipsWidgets;
 
 	// Is WidgetComponent a better way to implement widget?
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")

@@ -88,3 +88,13 @@ void APurrInPerilTaskActorBase::OnOverlapEnd_Implementation(AActor* OverlappedAc
         }
     }
 }
+
+void APurrInPerilTaskActorBase::DoInteraction(AController* Controller)
+{
+    DoInteraction_Implementation(Controller);
+    BP_DoInteraction(Controller);
+}
+
+void APurrInPerilTaskActorBase::DoInteraction_Implementation(AController* Controller)
+{
+}

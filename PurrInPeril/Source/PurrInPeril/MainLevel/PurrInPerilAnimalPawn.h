@@ -8,6 +8,7 @@
 
 class UBoxComponent;
 class UPurrInPerilMovementComponent;
+class UPurrInPerilSmellDiscoverComponent;
 
 /**
 * 
@@ -19,4 +20,6 @@ class PURRINPERIL_API APurrInPerilAnimalPawn : public APurrInPerilPawnBase
 public:
 	APurrInPerilAnimalPawn(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
+	UPurrInPerilSmellDiscoverComponent* SmellDiscoverComponent = nullptr;
 };
