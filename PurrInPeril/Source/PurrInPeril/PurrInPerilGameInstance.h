@@ -7,6 +7,7 @@
 #include "PurrInPerilGameInstance.generated.h"
 
 class UPurrInPerilSaveGame;
+class UUserWidget;
 
 /**
 * 
@@ -28,4 +29,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilSaveGame* SaveGame = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	TSubclassOf<UUserWidget> DefaultInteractTipsClass;
 };

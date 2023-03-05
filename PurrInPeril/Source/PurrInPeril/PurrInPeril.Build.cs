@@ -27,6 +27,7 @@ public class PurrInPeril : ModuleRules
 
 		PrivateIncludePaths.AddRange(new string[]
 		{
+			"PurrInPeril",
 			"PurrInPeril/MainLevel", 
 		});
 

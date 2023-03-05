@@ -16,6 +16,7 @@ APurrInPerilPawnBase::APurrInPerilPawnBase(const FObjectInitializer& ObjectIniti
 	BoxCollider->SetShouldUpdatePhysicsVolume(true);
 	BoxCollider->SetCanEverAffectNavigation(false);
 	BoxCollider->bDynamicObstacle = true;
+	BoxCollider->SetGenerateOverlapEvents(true);
 
     CustomMovement = GetCharacterMovement<UPurrInPerilMovementComponent>();
 }
