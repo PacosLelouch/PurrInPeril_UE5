@@ -10,7 +10,7 @@
 * 
 */
 UCLASS(Blueprintable)
-class PURRINPERIL_API APurrInPerilMainEnemyAIController : public APlayerController
+class PURRINPERIL_API APurrInPerilMainEnemyAIController : public AAIController
 {
 	GENERATED_BODY()
 public:

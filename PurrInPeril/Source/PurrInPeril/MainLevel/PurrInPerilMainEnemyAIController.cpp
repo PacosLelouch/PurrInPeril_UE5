@@ -6,5 +6,5 @@
 APurrInPerilMainEnemyAIController::APurrInPerilMainEnemyAIController(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
-
+    bWantsPlayerState = false;
 }
