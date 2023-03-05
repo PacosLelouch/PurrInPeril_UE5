@@ -16,6 +16,12 @@ class PURRINPERIL_API APurrInPerilMainPlayerState : public APlayerState
 public:
 	APurrInPerilMainPlayerState(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "PurrInPeril")
+	float MaxSanityValue = 100.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "PurrInPeril")
+	float MaxHungerValue = 100.0f;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float SanityValue = 100.0f;
 

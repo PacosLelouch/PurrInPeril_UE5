@@ -32,4 +32,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
 	TSubclassOf<UUserWidget> DefaultInteractTipsClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	TMap<TSubclassOf<AActor>, FLinearColor> SmellColorOfActor;
 };
