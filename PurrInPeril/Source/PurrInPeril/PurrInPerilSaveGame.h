@@ -23,4 +23,6 @@ class PURRINPERIL_API UPurrInPerilSaveGame : public USaveGame
 	GENERATED_BODY()
 public:
 	UPurrInPerilSaveGame(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+
 };

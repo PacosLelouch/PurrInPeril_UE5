@@ -59,13 +59,22 @@ public:
 	//~ End overlap.
 
 	//~ Begin interaction.
-	UFUNCTION(BlueprintCallable)
-	void DoInteraction(AController* Controller);
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	void OpenInteraction(AController* Controller);
 
-	virtual void DoInteraction_Implementation(AController* Controller);
+	virtual void OpenInteraction_Implementation(AController* Controller);
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void BP_DoInteraction(AController* Controller);
+	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril")
+	void BP_OpenInteraction(AController* Controller);
+
+
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	void CloseInteraction(AController* Controller);
+
+	virtual void CloseInteraction_Implementation(AController* Controller);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril")
+	void BP_CloseInteraction(AController* Controller);
 	//~ End interaction.
 
 

@@ -38,4 +38,7 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	bool bWithSmell = true;
 };

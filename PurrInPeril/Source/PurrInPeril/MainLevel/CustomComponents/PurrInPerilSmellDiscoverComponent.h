@@ -40,7 +40,7 @@ public:
 	TMap<UPurrInPerilSmellProduceComponent*, float> PerceivedSmellProducers;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
-	UPurrInPerilSmellProduceComponent* PerceivedClosestSmellProducer = nullptr;
+	UPurrInPerilSmellProduceComponent* PerceivedNearestSmellProducer = nullptr;
 
 	FTimerHandle AccurateTimerHandle;
 };

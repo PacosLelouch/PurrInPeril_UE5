@@ -19,7 +19,9 @@ public:
 	APurrInPerilWidgetTaskActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	//~ Begin interaction.
-	virtual void DoInteraction_Implementation(AController* Controller) override;
+	virtual void OpenInteraction_Implementation(AController* Controller) override;
+
+	virtual void CloseInteraction_Implementation(AController* Controller) override;
 	//~ End interaction.
 
 

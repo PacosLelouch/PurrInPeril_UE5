@@ -66,7 +66,10 @@ void UPurrInPerilSmellManagementSubsystem::UnregisterSmellProducer(UPurrInPerilS
     SmellProducers.Remove(SmellProducer);
 }
 
-UPurrInPerilSmellProduceComponent* UPurrInPerilSmellManagementSubsystem::GetSmellProducersInDistance(TMap<UPurrInPerilSmellProduceComponent*, float>& OutSmellProducers, USceneComponent* OriginSceneComponent, float MaxDistance, bool bNeedMap)
+UPurrInPerilSmellProduceComponent* UPurrInPerilSmellManagementSubsystem::GetSmellProducersInDistance(
+    TMap<UPurrInPerilSmellProduceComponent*, float>& OutSmellProducers, 
+    USceneComponent* OriginSceneComponent, float MaxDistance, 
+    bool bNeedMap, bool bWithNoSmell, bool bWithOrigin)
 {
     OutSmellProducers.Empty(SmellProducers.Num());
     if (SmellProducers.Num() == 0 || !OriginSceneComponent)
@@ -80,6 +83,14 @@ UPurrInPerilSmellProduceComponent* UPurrInPerilSmellManagementSubsystem::GetSmel
     FTransform OriginTransform = OriginSceneComponent->GetComponentTransform();
     for (UPurrInPerilSmellProduceComponent* SmellProducer : SmellProducers)
     {
+        if (!bWithNoSmell && !SmellProducer->bWithSmell)
+        {
+            continue;
+        }
+        if (!bWithOrigin && SmellProducer == OriginSceneComponent)
+        {
+            continue;
+        }
         FTransform SmellProducerTransform = SmellProducer->GetComponentTransform();
         float Distance = (OriginTransform.GetLocation() - SmellProducerTransform.GetLocation()).Size();
         if (Distance < MaxDistance)

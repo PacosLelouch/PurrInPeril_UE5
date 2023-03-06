@@ -36,7 +36,10 @@ public:
 
 	// Return the closest.
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
-	UPurrInPerilSmellProduceComponent* GetSmellProducersInDistance(TMap<UPurrInPerilSmellProduceComponent*, float>& OutSmellProducers, USceneComponent* OriginSceneComponent, float MaxDistance, bool bNeedMap = false);
+	UPurrInPerilSmellProduceComponent* GetSmellProducersInDistance(
+		TMap<UPurrInPerilSmellProduceComponent*, float>& OutSmellProducers, 
+		USceneComponent* OriginSceneComponent, float MaxDistance, 
+		bool bNeedMap = false, bool bWithNoSmell = false, bool bWithOrigin = false);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")

@@ -66,6 +66,17 @@ void APurrInPerilTaskActorBase::OnOverlapBegin_Implementation(AActor* Overlapped
             APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller);
             if (PlayerController)
             {
+                UUserWidget* WidgetForPlayer = nullptr;
+                UUserWidget** WidgetForPlayerPtr = PlayerToInteractTipsWidgets.Find(PlayerController);
+                if (!WidgetForPlayerPtr)
+                {
+                    WidgetForPlayer = CreateWidget(PlayerController, CustomInteractTipsClass);
+                    PlayerToInteractTipsWidgets.Add(PlayerController, WidgetForPlayer);
+                }
+                else
+                {
+                    WidgetForPlayer = *WidgetForPlayerPtr;
+                }
                 PlayerController->ActivateInteractableWidget(this);
             }
         }
@@ -83,18 +94,34 @@ void APurrInPerilTaskActorBase::OnOverlapEnd_Implementation(AActor* OverlappedAc
             APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller);
             if (PlayerController)
             {
+                UUserWidget* WidgetForPlayer = nullptr;
+                UUserWidget** WidgetForPlayerPtr = PlayerToInteractTipsWidgets.Find(PlayerController);
+                if (WidgetForPlayerPtr)
+                {
+                    WidgetForPlayer = *WidgetForPlayerPtr;
+                }
                 PlayerController->DeactivateInteractableWidget(this);
             }
         }
     }
 }
 
-void APurrInPerilTaskActorBase::DoInteraction(AController* Controller)
+void APurrInPerilTaskActorBase::OpenInteraction(AController* Controller)
 {
-    DoInteraction_Implementation(Controller);
-    BP_DoInteraction(Controller);
+    OpenInteraction_Implementation(Controller);
+    BP_OpenInteraction(Controller);
 }
 
-void APurrInPerilTaskActorBase::DoInteraction_Implementation(AController* Controller)
+void APurrInPerilTaskActorBase::OpenInteraction_Implementation(AController* Controller)
+{
+}
+
+void APurrInPerilTaskActorBase::CloseInteraction(AController* Controller)
+{
+    CloseInteraction_Implementation(Controller);
+    BP_CloseInteraction(Controller);
+}
+
+void APurrInPerilTaskActorBase::CloseInteraction_Implementation(AController* Controller)
 {
 }
