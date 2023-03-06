@@ -36,14 +36,14 @@ bool APurrInPerilMainPlayerController::ActivateInteractableWidget(APurrInPerilTa
         //if (InteractingTaskActor != TaskActorToActivate)
         {
             UUserWidget* HoldingWidget = *HoldingWidgetPtr;
-            HoldingWidget->AddToViewport();
+            HoldingWidget->AddToViewport(InteractableWidgetZOrder);
             InteractingTaskActor = TaskActorToActivate;
         }
     }
     else
     {
         UUserWidget* NewWidget = CreateWidget(this, TaskActorToActivate->CustomInteractTipsClass);
-        NewWidget->AddToViewport();
+        NewWidget->AddToViewport(InteractableWidgetZOrder);
         TaskActorToActivate->PlayerToInteractTipsWidgets.Add(this, NewWidget);
         InteractingTaskActor = TaskActorToActivate;
     }

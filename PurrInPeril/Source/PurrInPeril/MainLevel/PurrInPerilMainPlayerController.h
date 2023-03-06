@@ -30,4 +30,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
 	APurrInPerilTaskActorBase* InteractingTaskActor = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	int32 InteractableWidgetZOrder = 4;
 };

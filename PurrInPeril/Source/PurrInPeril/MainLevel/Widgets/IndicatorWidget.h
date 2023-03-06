@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "Components/Image.h"
 #include "IndicatorWidget.generated.h"
 
+class UCanvasPanel;
+class UImage;
 
 /**
 * 
@@ -16,10 +17,12 @@ class PURRINPERIL_API UIndicatorWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
-	USceneComponent* TargetComponent = nullptr;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
+	TSet<USceneComponent*> TargetComponents;
 
 protected:
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UCanvasPanel* IndicatorPanel;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UImage* IndicatorIcon;
@@ -29,12 +32,21 @@ protected:
 	UPROPERTY(EditAnywhere, Meta = (ClampMin = 0, ClampMax = 1))
 	float MinorAixsPercent = 0.7f;
 
-	FVector2D ScreenPos;
+	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget")
+	FVector TestLocation = FVector::UpVector * 200.0f;
+
+	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget")
+	FLinearColor IndicatorColor = FLinearColor::Blue;
+
+
+	//FVector2D ScreenPos;
 
 	FTransform CameraTransform;
 
 protected:
-	void CalculateIndicatorScreenPos(FVector Destination);
+	void UpdateCameraTransform();
+
+	FVector2D CalculateIndicatorScreenPos(FVector Destination);
 
 	void NativePreConstruct() override;
 

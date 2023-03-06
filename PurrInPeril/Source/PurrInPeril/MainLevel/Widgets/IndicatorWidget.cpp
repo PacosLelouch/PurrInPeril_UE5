@@ -6,8 +6,10 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/Image.h"
+#include "Components/CanvasPanel.h"
 
-void UIndicatorWidget::CalculateIndicatorScreenPos(FVector Destination)
+void UIndicatorWidget::UpdateCameraTransform()
 {
     APlayerController* PlayController = GetOwningPlayer();
     if (!PlayController)
@@ -16,7 +18,16 @@ void UIndicatorWidget::CalculateIndicatorScreenPos(FVector Destination)
     }
     CameraTransform.SetLocation(PlayController->PlayerCameraManager->GetCameraLocation());
     CameraTransform.SetRotation(PlayController->PlayerCameraManager->GetCameraRotation().Quaternion());
+}
 
+FVector2D UIndicatorWidget::CalculateIndicatorScreenPos(FVector Destination)
+{
+    FVector2D ScreenPos = FVector2D::ZeroVector;
+    APlayerController* PlayController = GetOwningPlayer();
+    if (!PlayController)
+    {
+        return ScreenPos;
+    }
     auto LocalDestination = CameraTransform.InverseTransformPositionNoScale(Destination);
 
     FVector2D DestinationDir = FVector2D(LocalDestination.Y, LocalDestination.Z);
@@ -58,6 +69,7 @@ void UIndicatorWidget::CalculateIndicatorScreenPos(FVector Destination)
             }
         }
     }
+    return ScreenPos;
 }
 
 void UIndicatorWidget::NativePreConstruct()
@@ -70,14 +82,19 @@ void UIndicatorWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
 
-    if (!TargetComponent)
-    {
-        // Set invisible.
-        SetVisibility(ESlateVisibility::Collapsed);
-        return;
-    }
-    FVector Location = TargetComponent->GetComponentTransform().GetLocation();
-    CalculateIndicatorScreenPos(Location);
+    //if (!TargetComponent)
+    //{
+    //    // Set invisible.
+    //    SetVisibility(ESlateVisibility::Collapsed);
+    //    return;
+    //}
+    
+    UpdateCameraTransform();
+    IndicatorIcon->SetColorAndOpacity(IndicatorColor);
+
+    FVector Location = TestLocation; // TEST //TargetComponent->GetComponentTransform().GetLocation();
+    FVector2D ScreenPos = CalculateIndicatorScreenPos(Location);
+
     auto* CanvasSlot = Cast<UCanvasPanelSlot>(Slot);
     if (CanvasSlot) {
         CanvasSlot->SetPosition(ScreenPos);
