@@ -59,36 +59,60 @@ public:
 	//~ End overlap.
 
 	//~ Begin interaction.
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Widget")
 	void OpenInteraction(AController* Controller);
 
 	virtual void OpenInteraction_Implementation(AController* Controller);
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril")
+	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril|Widget")
 	void BP_OpenInteraction(AController* Controller);
 
 
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Widget")
 	void CloseInteraction(AController* Controller);
 
 	virtual void CloseInteraction_Implementation(AController* Controller);
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril")
+	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril|Widget")
 	void BP_CloseInteraction(AController* Controller);
 	//~ End interaction.
 
+	//~ Begin task.
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
+	void CompleteThisPartOfTask(AController* Controller);
+
+	virtual void CompleteThisPartOfTask_Implementation(AController* Controller);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril|Task")
+	void BP_CompleteThisPartOfTask(AController* Controller);
+
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
+	void ResetThisPartOfTask(AController* Controller);
+
+	virtual void ResetThisPartOfTask_Implementation(AController* Controller);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril|Task")
+	void BP_ResetThisPartOfTask(AController* Controller);
+
+
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
+	bool IsThisPartOfTaskCompleted(AController* Controller) const;
+	//~ End task.
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilInteractableComponent* InteractableComponent = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril|Widget")
 	TSubclassOf<UUserWidget> CustomInteractTipsClass;
 
 	// For extension to multi-player, make a map.
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
 	TMap<AController*, UUserWidget*> PlayerToInteractTipsWidgets;
 
 	// Is WidgetComponent a better way to implement widget?
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Widget")
 	UWidgetComponent* InteractTipsWidgetComponent = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Task")
+	TMap<AController*, bool> PlayerToPartOfTaskCompleted;
 };

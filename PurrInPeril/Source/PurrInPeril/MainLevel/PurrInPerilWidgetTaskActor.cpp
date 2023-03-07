@@ -3,6 +3,7 @@
 #include "PurrInPerilWidgetTaskActor.h"
 #include "PurrInPerilMainPlayerController.h"
 #include "Blueprint/UserWidget.h"
+#include "Widgets/TaskContentWidgetBase.h"
 
 
 APurrInPerilWidgetTaskActor::APurrInPerilWidgetTaskActor(const FObjectInitializer& ObjectInitializer)
@@ -16,15 +17,16 @@ void APurrInPerilWidgetTaskActor::OpenInteraction_Implementation(AController* Co
 	APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller);
 	if (PlayerController)
 	{
-		UUserWidget* WidgetForPlayer = nullptr;
-		UUserWidget** WidgetForPlayerPtr = PlayerToTaskWidgets.Find(PlayerController);
+		UTaskContentWidgetBase* WidgetForPlayer = nullptr;
+		UTaskContentWidgetBase** WidgetForPlayerPtr = PlayerToTaskWidgets.Find(PlayerController);
 		if (WidgetForPlayerPtr)
 		{
 			WidgetForPlayer = *WidgetForPlayerPtr;
 		}
 		else
 		{
-			WidgetForPlayer = CreateWidget(PlayerController, TaskWidgetClass);
+			WidgetForPlayer = CreateWidget<UTaskContentWidgetBase>(PlayerController, TSubclassOf<UUserWidget>(TaskWidgetClass));
+			WidgetForPlayer->SetTaskActor(this);
 			PlayerToTaskWidgets.Add(PlayerController, WidgetForPlayer);
 		}
 		PlayerController->OpenWidgetLockMovement(WidgetForPlayer);
@@ -36,10 +38,10 @@ void APurrInPerilWidgetTaskActor::CloseInteraction_Implementation(AController* C
 	APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller);
 	if (PlayerController)
 	{
-		UUserWidget** WidgetForPlayerPtr = PlayerToTaskWidgets.Find(PlayerController);
+		UTaskContentWidgetBase** WidgetForPlayerPtr = PlayerToTaskWidgets.Find(PlayerController);
 		if (WidgetForPlayerPtr)
 		{
-			UUserWidget* WidgetForPlayer = *WidgetForPlayerPtr;
+			UTaskContentWidgetBase* WidgetForPlayer = *WidgetForPlayerPtr;
 			PlayerController->CloseWidgetUnlockMovement(WidgetForPlayer);
 		}
 	}

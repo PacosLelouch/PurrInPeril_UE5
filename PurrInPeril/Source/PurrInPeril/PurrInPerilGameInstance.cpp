@@ -2,20 +2,8 @@
 
 #include "PurrInPerilGameInstance.h"
 #include "PurrInPerilSaveGame.h"
+#include "PurrInPerilAsset.h"
 #include "GameFramework/Actor.h"
-
-FLinearColor UIndicateColorMapping::GetColorFromMapping(TSubclassOf<AActor> InClass)
-{
-	for (TSubclassOf<AActor> TempClass = InClass; TempClass != AActor::StaticClass(); TempClass = TempClass->GetSuperClass())
-	{
-		FLinearColor* ColorPtr = Mapping.Find(TempClass);
-		if (ColorPtr)
-		{
-			return *ColorPtr;
-		}
-	}
-	return DefaultColor;
-}
 
 UPurrInPerilGameInstance::UPurrInPerilGameInstance(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)

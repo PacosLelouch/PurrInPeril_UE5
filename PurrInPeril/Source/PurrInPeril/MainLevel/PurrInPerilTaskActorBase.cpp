@@ -125,3 +125,47 @@ void APurrInPerilTaskActorBase::CloseInteraction(AController* Controller)
 void APurrInPerilTaskActorBase::CloseInteraction_Implementation(AController* Controller)
 {
 }
+
+void APurrInPerilTaskActorBase::CompleteThisPartOfTask(AController* Controller)
+{
+    CompleteThisPartOfTask_Implementation(Controller);
+    BP_CompleteThisPartOfTask(Controller);
+}
+
+void APurrInPerilTaskActorBase::CompleteThisPartOfTask_Implementation(AController* Controller)
+{
+    bool* bIsCompletedPtr = PlayerToPartOfTaskCompleted.Find(Controller);
+    if (bIsCompletedPtr)
+    {
+        *bIsCompletedPtr = true;
+    }
+    else
+    {
+        PlayerToPartOfTaskCompleted.Add(Controller, true);
+    }
+}
+
+void APurrInPerilTaskActorBase::ResetThisPartOfTask(AController* Controller)
+{
+    ResetThisPartOfTask_Implementation(Controller);
+    BP_ResetThisPartOfTask(Controller);
+}
+
+void APurrInPerilTaskActorBase::ResetThisPartOfTask_Implementation(AController* Controller)
+{
+    bool* bIsCompletedPtr = PlayerToPartOfTaskCompleted.Find(Controller);
+    if (bIsCompletedPtr)
+    {
+        *bIsCompletedPtr = false;
+    }
+    else
+    {
+        PlayerToPartOfTaskCompleted.Add(Controller, false);
+    }
+}
+
+bool APurrInPerilTaskActorBase::IsThisPartOfTaskCompleted(AController* Controller) const
+{
+    const bool* bIsCompletedPtr = PlayerToPartOfTaskCompleted.Find(Controller);
+    return bIsCompletedPtr && *bIsCompletedPtr;
+}

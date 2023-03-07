@@ -28,20 +28,20 @@ public:
 
 	virtual void Deinitialize() override;
 
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Smell")
 	void RegisterSmellProducer(UPurrInPerilSmellProduceComponent* SmellProducer);
 
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Smell")
 	void UnregisterSmellProducer(UPurrInPerilSmellProduceComponent* SmellProducer);
 
 	// Return the closest.
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Smell")
 	UPurrInPerilSmellProduceComponent* GetSmellProducersInDistance(
 		TMap<UPurrInPerilSmellProduceComponent*, float>& OutSmellProducers, 
 		USceneComponent* OriginSceneComponent, float MaxDistance, 
 		bool bNeedMap = false, bool bWithNoSmell = false, bool bWithOrigin = false);
 
 protected:
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Smell")
 	TSet<UPurrInPerilSmellProduceComponent*> SmellProducers;
 };

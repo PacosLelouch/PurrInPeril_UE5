@@ -7,6 +7,7 @@
 #include "PurrInPerilTaskActorBase.h"
 #include "PurrInPerilWidgetTaskActor.generated.h"
 
+class UTaskContentWidgetBase;
 
 /**
 * 
@@ -26,9 +27,9 @@ public:
 
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril")
-	TSubclassOf<UUserWidget> TaskWidgetClass = nullptr;
+	TSubclassOf<UTaskContentWidgetBase> TaskWidgetClass = nullptr;
 
 	// For extension to multi-player, make a map.
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
-	TMap<AController*, UUserWidget*> PlayerToTaskWidgets;
+	TMap<AController*, UTaskContentWidgetBase*> PlayerToTaskWidgets;
 };
