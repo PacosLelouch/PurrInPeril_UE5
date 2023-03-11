@@ -7,7 +7,7 @@
 APurrInPerilMainPlayerController::APurrInPerilMainPlayerController(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
-    bShowMouseCursor = true;
+    //bShowMouseCursor = true;
 }
 
 void APurrInPerilMainPlayerController::BeginPlay()
