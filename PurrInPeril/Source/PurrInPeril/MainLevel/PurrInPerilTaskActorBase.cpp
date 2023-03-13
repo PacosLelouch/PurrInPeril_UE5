@@ -3,9 +3,11 @@
 #include "PurrInPerilTaskActorBase.h"
 #include "Engine/GameEngine.h"
 #include "Engine/World.h"
-#include "PurrInPerilGameInstance.h"
-#include "PurrInPerilMainPlayerController.h"
 #include "Blueprint/UserWidget.h"
+#include "PurrInPerilGameInstance.h"
+#include "PurrInPerilAsset.h"
+#include "PurrInPerilMainPlayerController.h"
+#include "Subsystems/PurrInPerilTaskManagementSubsystem.h"
 
 
 APurrInPerilTaskActorBase::APurrInPerilTaskActorBase(const FObjectInitializer& ObjectInitializer)
@@ -14,6 +16,9 @@ APurrInPerilTaskActorBase::APurrInPerilTaskActorBase(const FObjectInitializer& O
     RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
     InteractableComponent = CreateDefaultSubobject<UPurrInPerilInteractableComponent>(TEXT("InteractableComponent"));
     InteractableComponent->SetupAttachment(RootComponent);
+
+    SmellProduceComponent = CreateDefaultSubobject<UPurrInPerilSmellProduceComponent>(TEXT("SmellProduceComponent"));
+    SmellProduceComponent->SetupAttachment(RootComponent);
 
     //Register Events
     OnActorBeginOverlap.AddDynamic(this, &APurrInPerilTaskActorBase::OnOverlapBegin);
@@ -24,23 +29,39 @@ void APurrInPerilTaskActorBase::BeginPlay()
 {
     Super::BeginPlay();
 
-    UWorld* World = GetWorld();
-    if (World)
+    if (const UUserWidgetClassSettings* UserWidgetClassSettings = UUserWidgetClassSettings::GetFromGameInstance(this))
     {
-        UPurrInPerilGameInstance* GameInstance = World->GetGameInstance<UPurrInPerilGameInstance>();
-        if (GameInstance)
+        if (!CustomInteractTipsClass)
         {
-            if (!CustomInteractTipsClass)
-            {
-                CustomInteractTipsClass = GameInstance->DefaultInteractTipsClass;
-            }
+            CustomInteractTipsClass = UserWidgetClassSettings->DefaultInteractTipsClass;
         }
     }
+
+    UPurrInPerilTaskManagementSubsystem* TaskManagementSubsystem = UPurrInPerilTaskManagementSubsystem::GetSubsystem(this);
+    if (TaskManagementSubsystem)
+    {
+        TaskManagementSubsystem->RegisterTaskActor(this);
+    }
+}
+
+void APurrInPerilTaskActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    UPurrInPerilTaskManagementSubsystem* TaskManagementSubsystem = UPurrInPerilTaskManagementSubsystem::GetSubsystem(this);
+    if (TaskManagementSubsystem)
+    {
+        TaskManagementSubsystem->UnregisterTaskActor(this);
+    }
+    Super::EndPlay(EndPlayReason);
 }
 
 UPurrInPerilInteractableComponent* APurrInPerilTaskActorBase::GetInteractableComponent_Implementation()
 {
     return InteractableComponent;
+}
+
+UPurrInPerilSmellProduceComponent* APurrInPerilTaskActorBase::GetSmellProduceComponent_Implementation()
+{
+    return SmellProduceComponent;
 }
 
 void APurrInPerilTaskActorBase::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)

@@ -5,6 +5,7 @@
 
 #include "CoreMinimal.h"
 #include "CustomComponents/PurrInPerilInteractableComponent.h"
+#include "CustomComponents/PurrInPerilSmellProduceComponent.h"
 #include "PurrInPerilTaskActorBase.generated.h"
 
 class UPrimitiveComponent;
@@ -16,7 +17,7 @@ class APurrInPerilMainPlayerController;
 * 
 */
 UCLASS(BlueprintType, Blueprintable)
-class PURRINPERIL_API APurrInPerilTaskActorBase : public AActor, public IInteractableActorInterface
+class PURRINPERIL_API APurrInPerilTaskActorBase : public AActor, public IInteractableActorInterface, public ISmellProducerInterface
 {
 	GENERATED_BODY()
 public:
@@ -24,9 +25,15 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	//~ Begin IInteractableActorInterface.
 	virtual UPurrInPerilInteractableComponent* GetInteractableComponent_Implementation() override;
 	//~ End IInteractableActorInterface.
+
+	//~ Begin ISmellProducerInterface.
+	virtual UPurrInPerilSmellProduceComponent* GetSmellProduceComponent_Implementation() override;
+	//~ End ISmellProducerInterface.
 
 	//~ Begin overlap.
 	// declare overlap begin function.
@@ -99,8 +106,11 @@ public:
 	bool IsThisPartOfTaskCompleted(AController* Controller) const;
 	//~ End task.
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Task")
 	UPurrInPerilInteractableComponent* InteractableComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Task")
+	UPurrInPerilSmellProduceComponent* SmellProduceComponent = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril|Widget")
 	TSubclassOf<UUserWidget> CustomInteractTipsClass;

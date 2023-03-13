@@ -26,7 +26,7 @@ void APurrInPerilWidgetTaskActor::OpenInteraction_Implementation(AController* Co
 		else
 		{
 			WidgetForPlayer = CreateWidget<UTaskContentWidgetBase>(PlayerController, TSubclassOf<UUserWidget>(TaskWidgetClass));
-			WidgetForPlayer->SetTaskActor(this);
+			WidgetForPlayer->SetTaskOwner(this);
 			PlayerToTaskWidgets.Add(PlayerController, WidgetForPlayer);
 		}
 		PlayerController->OpenWidgetLockMovement(WidgetForPlayer);

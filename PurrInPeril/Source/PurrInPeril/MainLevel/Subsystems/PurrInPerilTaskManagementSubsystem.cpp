@@ -32,17 +32,13 @@ bool UPurrInPerilTaskManagementSubsystem::ShouldCreateSubsystem(UObject* Outer) 
         return false;
     }
 
-    UWorld* World = GetWorld();
-    if (!World)
-    {
-        return false;
-    }
-
-    APurrInPerilMainGameState* GameState = World->GetGameState<APurrInPerilMainGameState>();
-    if (!GameState)
-    {
-        return false;
-    }
+    // Cannot use GetWorld() and get GameState before initialization!
+    UWorld* World = Cast<UWorld>(Outer);
+    //APurrInPerilMainGameState* GameState = World->GetGameState<APurrInPerilMainGameState>();
+    //if (!GameState)
+    //{
+    //    return false;
+    //}
 
     return true;
 }
@@ -51,7 +47,7 @@ void UPurrInPerilTaskManagementSubsystem::Initialize(FSubsystemCollectionBase& C
 {
     Super::Initialize(Collection);
     TaskActors.Empty();
-    InitializeTaskActorsFromWorld();
+    //InitializeTaskActorsFromWorld();
 }
 
 void UPurrInPerilTaskManagementSubsystem::Deinitialize()
@@ -68,13 +64,7 @@ void UPurrInPerilTaskManagementSubsystem::RegisterTaskActor(APurrInPerilTaskActo
         return;
     }
 
-    FPurrInPerilTaskActorSet* TaskActorSetPtr = TaskActors.Find(TaskIdentifier);
-    if (!TaskActorSetPtr)
-    {
-        return;
-    }
-
-    FPurrInPerilTaskActorSet& TaskActorSet = *TaskActorSetPtr;
+    FPurrInPerilTaskActorSet& TaskActorSet = TaskActors.FindOrAdd(TaskIdentifier);
     TaskActorSet.Set.Add(TaskActor);
 }
 
@@ -94,6 +84,11 @@ void UPurrInPerilTaskManagementSubsystem::UnregisterTaskActor(APurrInPerilTaskAc
 
     FPurrInPerilTaskActorSet& TaskActorSet = *TaskActorSetPtr;
     TaskActorSet.Set.Remove(TaskActor);
+
+    if (TaskActorSet.Set.Num() == 0)
+    {
+        TaskActors.Remove(TaskIdentifier);
+    }
 }
 
 bool UPurrInPerilTaskManagementSubsystem::GetTaskIdentifier(APurrInPerilTaskActorBase* TaskActor, FPurrInPerilTaskIdentifier& OutTaskIdentifier) const

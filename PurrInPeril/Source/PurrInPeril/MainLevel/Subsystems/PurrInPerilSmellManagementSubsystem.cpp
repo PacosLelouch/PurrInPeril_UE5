@@ -29,17 +29,13 @@ bool UPurrInPerilSmellManagementSubsystem::ShouldCreateSubsystem(UObject* Outer)
         return false;
     }
 
-    UWorld* World = GetWorld();
-    if (!World)
-    {
-        return false;
-    }
-
-    APurrInPerilMainGameState* GameState = World->GetGameState<APurrInPerilMainGameState>();
-    if (!GameState)
-    {
-        return false;
-    }
+    // Cannot use GetWorld() and get GameState before initialization!
+    UWorld* World = Cast<UWorld>(Outer);
+    //APurrInPerilMainGameState* GameState = World->GetGameState<APurrInPerilMainGameState>();
+    //if (!GameState)
+    //{
+    //    return false;
+    //}
 
     return true;
 }

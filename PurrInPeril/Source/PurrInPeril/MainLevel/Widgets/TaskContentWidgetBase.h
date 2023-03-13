@@ -19,7 +19,7 @@ class PURRINPERIL_API UTaskContentWidgetBase : public UUserWidget
 	GENERATED_BODY()
 public:
 
-	void SetTaskActor(APurrInPerilTaskActorBase* InTaskActor) { TaskActor = InTaskActor; }
+	void SetTaskOwner(APurrInPerilTaskActorBase* InTaskActor) { TaskOwner = InTaskActor; }
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Task")
 	APurrInPerilTaskActorBase* TaskOwner = nullptr;
@@ -30,9 +30,6 @@ protected:
 
 	//UPROPERTY(Transient, BlueprintReadOnly, meta = (BindWidgetAnim))
 	//UWidgetAnimation* OpenWidgetAnimation = nullptr;
-
-	UPROPERTY(BlueprintReadOnly, Category = "PurrInPeril|Task")
-	APurrInPerilTaskActorBase* TaskActor = nullptr;
 
 protected:
 	void NativePreConstruct() override;

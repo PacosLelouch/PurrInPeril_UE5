@@ -51,6 +51,7 @@ public:
 	FIntPoint GetTaskNumAndCompleteCount(const FPurrInPerilTaskIdentifier& TaskIdentifier, AController* Controller) const;
 
 protected:
+	// Is it useful?
 	void InitializeTaskActorsFromWorld();
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Task")

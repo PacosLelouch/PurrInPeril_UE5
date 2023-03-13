@@ -22,5 +22,6 @@ public:
 	UButton* Button_CloseWidget = nullptr;
 
 protected:
-
+	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 };

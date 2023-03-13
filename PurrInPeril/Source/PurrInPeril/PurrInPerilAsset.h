@@ -4,16 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "PurrInPerilCommon.h"
 #include "PurrInPerilAsset.generated.h"
 
 class AActor;
 class APurrInPerilTaskActorBase;
+class UUserWidget;
+class UPlayerMainPanelWidgetBase;
 
 UCLASS(BlueprintType, Blueprintable)
 class PURRINPERIL_API UIndicateColorMapping : public UDataAsset
 {
 	GENERATED_BODY()
 public:
+	static const UIndicateColorMapping* GetFromGameInstance(UObject* WorldContextObject);
+
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Widget")
 	FLinearColor GetColorFromMapping(TSubclassOf<AActor> InClass) const;
 
@@ -26,39 +32,14 @@ protected:
 	TMap<TSubclassOf<AActor>, FLinearColor> Mapping;
 };
 
-
-USTRUCT(BlueprintType)
-struct PURRINPERIL_API FPurrInPerilTaskIdentifier
-{
-	GENERATED_BODY()
-public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Task")
-	int32 ID = 0;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Task")
-	FName TaskName = TEXT("Default");
-
-	bool operator==(const FPurrInPerilTaskIdentifier& Other) const
-	{
-		return ID == Other.ID && 
-			TaskName == Other.TaskName;
-	}
-};
-
-template<> struct TIsPODType<FPurrInPerilTaskIdentifier> { enum { Value = true }; };
-
-FORCEINLINE uint32 GetTypeHash(const FPurrInPerilTaskIdentifier& Struct)
-{
-	uint32 Hash = FCrc::MemCrc32(&Struct, sizeof(Struct));
-	return Hash;
-}
-
 UCLASS(BlueprintType, Blueprintable)
 class PURRINPERIL_API UTaskIdentifierMapping : public UDataAsset
 {
 	GENERATED_BODY()
 public:
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	static const UTaskIdentifierMapping* GetFromGameInstance(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
 	FPurrInPerilTaskIdentifier GetIdentifier(TSubclassOf<APurrInPerilTaskActorBase> InClass) const;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
@@ -68,4 +49,59 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
 	TMap<TSubclassOf<APurrInPerilTaskActorBase>, FPurrInPerilTaskIdentifier> Mapping;
+};
+
+UCLASS(BlueprintType, Blueprintable)
+class PURRINPERIL_API UGameplayNumericalSettings : public UDataAsset
+{
+	GENERATED_BODY()
+public:
+	static const UGameplayNumericalSettings* GetFromGameInstance(UObject* WorldContextObject);
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	FPlayerStateParameter DefaultPlayerStateParameter;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	FSmellDistanceParameter DefaultSmellDistanceParameter;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	FInLevelCostParameter DefaultInLevelCostParameter;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	FInLevelTimeParameter DefaultInLevelTimeParameter;
+};
+
+UCLASS(BlueprintType, Blueprintable)
+class PURRINPERIL_API UUserWidgetClassSettings : public UDataAsset
+{
+	GENERATED_BODY()
+public:
+	static const UUserWidgetClassSettings* GetFromGameInstance(UObject* WorldContextObject);
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	TSubclassOf<UPlayerMainPanelWidgetBase> DefaultPlayerMainPanelWidgetClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	TSubclassOf<UUserWidget> DefaultInteractTipsClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	TSubclassOf<UUserWidget> DefaultIndicatorPanelWidgetClass;
+};
+
+UCLASS(BlueprintType)
+class PURRINPERIL_API UPurrInPerilAssetLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+public:
+	UFUNCTION(BlueprintPure, Category = "PurrInPeril", meta = (WorldContext = "WorldContextObject"))
+	static const UIndicateColorMapping* GetIndicateColorMappingFromGameInstance(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "PurrInPeril", meta = (WorldContext = "WorldContextObject"))
+	static const UTaskIdentifierMapping* GetTaskIdentifierMappingFromGameInstance(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "PurrInPeril", meta = (WorldContext = "WorldContextObject"))
+	static const UGameplayNumericalSettings* GetGameplayNumericalSettingsFromGameInstance(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "PurrInPeril", meta = (WorldContext = "WorldContextObject"))
+	static const UUserWidgetClassSettings* GetUserWidgetClassSettingsFromGameInstance(UObject* WorldContextObject);
 };

@@ -17,8 +17,8 @@ class PURRINPERIL_API UIndicatorWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
-	TSet<USceneComponent*> TargetComponents;
+	//UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
+	//TSet<USceneComponent*> TargetComponents;
 
 protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -28,18 +28,15 @@ protected:
 	UImage* IndicatorIcon;
 
 	UPROPERTY(EditAnywhere, Meta = (ClampMin = 0, ClampMax = 1))
-	float LongAxisPercent = 0.7f;
+	float LongAxisPercent = 0.75f;
 	UPROPERTY(EditAnywhere, Meta = (ClampMin = 0, ClampMax = 1))
-	float MinorAixsPercent = 0.7f;
+	float MinorAixsPercent = 0.75f;
 
-	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget")
-	FVector TestLocation = FVector::UpVector * 200.0f;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
+	FVector TargetLocation = FVector::UpVector * 200.0f;
 
-	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
 	FLinearColor IndicatorColor = FLinearColor::Blue;
-
-
-	//FVector2D ScreenPos;
 
 	FTransform CameraTransform;
 
@@ -48,7 +45,9 @@ protected:
 
 	FVector2D CalculateIndicatorScreenPos(FVector Destination);
 
-	void NativePreConstruct() override;
+	virtual void NativePreConstruct() override;
 
-	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	virtual void NativeConstruct() override;
+
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 };
