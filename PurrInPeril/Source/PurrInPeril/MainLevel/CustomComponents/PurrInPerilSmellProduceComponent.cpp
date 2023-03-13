@@ -20,7 +20,7 @@ void UPurrInPerilSmellProduceComponent::BeginPlay()
     }
 }
 
-void UPurrInPerilSmellProduceComponent::EndPlay(EEndPlayReason::Type EndPlayReason)
+void UPurrInPerilSmellProduceComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     auto* SmellManagementSubsystem = UPurrInPerilSmellManagementSubsystem::GetSubsystem(this);
     if (SmellManagementSubsystem)

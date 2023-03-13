@@ -1,8 +1,18 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PurrInPerilMainPlayerController.h"
-#include "Blueprint/UserWidget.h"
 #include "PurrInPerilTaskActorBase.h"
+#include "PurrInPerilGameInstance.h"
+#include "PurrInPerilAsset.h"
+#include "PurrInPerilAnimalPawn.h"
+#include "PurrInPerilMainGameState.h"
+#include "PurrInPerilMainPlayerState.h"
+#include "CustomComponents/PurrInPerilSmellDiscoverComponent.h"
+#include "Subsystems/PurrInPerilSmellManagementSubsystem.h"
+#include "Subsystems/PurrInPerilTaskManagementSubsystem.h"
+#include "Widgets/PlayerMainPanelWidgetBase.h"
+#include "Blueprint/UserWidget.h"
+#include "Engine/World.h"
 
 APurrInPerilMainPlayerController::APurrInPerilMainPlayerController(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
@@ -13,18 +23,92 @@ APurrInPerilMainPlayerController::APurrInPerilMainPlayerController(const FObject
 void APurrInPerilMainPlayerController::BeginPlay()
 {
     Super::BeginPlay();
+
+    if (const UUserWidgetClassSettings* UserWidgetClassSettings = UUserWidgetClassSettings::GetFromGameInstance(this))
+    {
+        if (!CustomPlayerMainPanelWidgetClass)
+        {
+            CustomPlayerMainPanelWidgetClass = UserWidgetClassSettings->DefaultPlayerMainPanelWidgetClass;
+            if (!CustomPlayerMainPanelWidgetClass)
+            {
+                CustomPlayerMainPanelWidgetClass = UPlayerMainPanelWidgetBase::StaticClass();
+            }
+        }
+
+        if (!CustomIndicatorPanelWidgetClass)
+        {
+            CustomIndicatorPanelWidgetClass = UserWidgetClassSettings->DefaultIndicatorPanelWidgetClass;
+            if (!CustomIndicatorPanelWidgetClass)
+            {
+                CustomIndicatorPanelWidgetClass = UUserWidget::StaticClass();
+            }
+        }
+    }
+
+    if (!PlayerMainPanelWidget)
+    {
+        PlayerMainPanelWidget = CreateWidget< UPlayerMainPanelWidgetBase>(this, CustomPlayerMainPanelWidgetClass);
+    }
+    PlayerMainPanelWidget->AddToViewport(PlayerMainPanelWidgetZOrder);
+
+    if (!IndicatorPanelWidget)
+    {
+        IndicatorPanelWidget = CreateWidget<UUserWidget>(this, CustomIndicatorPanelWidgetClass);
+    }
+    IndicatorPanelWidget->AddToViewport(IndicatorWidgetZOrder);
+    
+    APurrInPerilAnimalPawn* LocalPawn = GetPawn<APurrInPerilAnimalPawn>();
+    if (LocalPawn && LocalPawn->SmellDiscoverComponent)
+    {
+        LocalPawn->SmellDiscoverComponent->OnAccurateSmellBegin.AddDynamic(this, &APurrInPerilMainPlayerController::ShowAccurateIndicatorWidget);
+        LocalPawn->SmellDiscoverComponent->OnAccurateSmellEnd.AddDynamic(this, &APurrInPerilMainPlayerController::HideAccurateIndicatorWidget);
+    }
+}
+
+void APurrInPerilMainPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    if (PlayerMainPanelWidget)
+    {
+        PlayerMainPanelWidget->RemoveFromParent();
+    }
+    if (IndicatorPanelWidget)
+    {
+        IndicatorPanelWidget->RemoveFromParent();
+    }
+    APurrInPerilAnimalPawn* LocalPawn = GetPawn<APurrInPerilAnimalPawn>();
+    if (LocalPawn && LocalPawn->SmellDiscoverComponent)
+    {
+        LocalPawn->SmellDiscoverComponent->OnAccurateSmellBegin.RemoveDynamic(this, &APurrInPerilMainPlayerController::ShowAccurateIndicatorWidget);
+        LocalPawn->SmellDiscoverComponent->OnAccurateSmellEnd.RemoveDynamic(this, &APurrInPerilMainPlayerController::HideAccurateIndicatorWidget);
+    }
+    Super::EndPlay(EndPlayReason);
 }
 
 void APurrInPerilMainPlayerController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    // TODO in Tick:
-    // 1. Get nearest.
-    // 1. If Pawn's SmellDiscoverComponent bIsActivatingAccurateSmell.
-    //    2. Activate widget.
-    //    2. Get info from Pawn's SmellDiscoverComponent.
-    //    3. 
-    //    4. 
+    // All these prodecures move to UserWidget.
+    //APurrInPerilAnimalPawn* LocalPawn = GetPawn<APurrInPerilAnimalPawn>();
+    //if (LocalPawn && LocalPawn->SmellDiscoverComponent)
+    //{
+    //    // 1. TODO: Get nearest.
+    //    auto* PerceivedNearestSmellProducer = LocalPawn->SmellDiscoverComponent->PerceivedNearestSmellProducer;
+    //    // 2. If Pawn's SmellDiscoverComponent bIsActivatingAccurateSmell.
+    //    if (LocalPawn->SmellDiscoverComponent->bIsActivatingAccurateSmell)
+    //    {
+    //        // 3. Activate widget (Already done in OnAccurateSmellBegin).
+    //        // 4. Get info from Pawn's SmellDiscoverComponent.
+    //        LocalPawn->SmellDiscoverComponent->PerceivedSmellProducers;
+    //        // 5. 
+    //        // 6. 
+
+    //    }
+    //}
+}
+
+void APurrInPerilMainPlayerController::SetupInputComponent()
+{
+    Super::SetupInputComponent();
 }
 
 bool APurrInPerilMainPlayerController::ActivateInteractableWidget(APurrInPerilTaskActorBase* TaskActorToActivate)
@@ -95,6 +179,10 @@ void APurrInPerilMainPlayerController::OpenWidgetLockMovement(UUserWidget* UserW
         UserWidget->AddToViewport(WidgetLockMovementZOrder);
         bLastIgnoreMoveInput = IsMoveInputIgnored();
         SetIgnoreMoveInput(true);
+        SetIgnoreLookInput(true);
+        SetShowMouseCursor(true);
+        DeactivateInteractableWidget(InteractingTaskActor);
+        bIsInteractingWithObject = true;
     }
 }
 
@@ -106,8 +194,22 @@ void APurrInPerilMainPlayerController::CloseWidgetUnlockMovement(UUserWidget* Us
         // 2. Close task widget.
         UserWidget->RemoveFromParent();
     }
-    bLastIgnoreMoveInput = IsMoveInputIgnored();
     SetIgnoreMoveInput(bLastIgnoreMoveInput);
+    SetIgnoreLookInput(bLastIgnoreMoveInput);
+    SetShowMouseCursor(bLastIgnoreMoveInput);
+    bLastIgnoreMoveInput = IsMoveInputIgnored();
+    ActivateInteractableWidget(InteractingTaskActor);
+    bIsInteractingWithObject = false;
+}
+
+void APurrInPerilMainPlayerController::ShowAccurateIndicatorWidget()
+{
+
+}
+
+void APurrInPerilMainPlayerController::HideAccurateIndicatorWidget()
+{
+
 }
 
 bool APurrInPerilMainPlayerController::DoAccurateSmell()
@@ -117,18 +219,54 @@ bool APurrInPerilMainPlayerController::DoAccurateSmell()
     {
         return false;
     }
-    // TODO:
+
+    APurrInPerilAnimalPawn* LocalPawn = GetPawn<APurrInPerilAnimalPawn>();
+    APurrInPerilMainPlayerState* LocalPlayerState = GetPlayerState<APurrInPerilMainPlayerState>();
+
+    UWorld* World = GetWorld();
+    APurrInPerilMainGameState* GameState = World->GetGameState<APurrInPerilMainGameState>();
+
     // 2. If yes,
     //    3. Decrease hunger value in PlayerState.
     //    4. SmellDiscoverComponent ActivateAccurateSmell(Time).
+    LocalPlayerState->CurrentPlayerStateParameter.HungerValue -= GameState->InLevelCostParameter.AccurateSmellCost;
+    LocalPawn->SmellDiscoverComponent->ActivateAccurateSmell(GameState->InLevelTimeParameter.AccurateSmellDurationInSecond);
 
     return true;
 }
 
 bool APurrInPerilMainPlayerController::CheckAccurateSmellValid()
 {
-    // TODO:
-    // 1. Pawn's SmellDiscoverComponent !bIsActivatingAccurateSmell.
-    // 2. Enough hunger value.
-    return false;
+    // 1. Pawn's SmellDiscoverComponent bIsActivatingAccurateSmell -> return false.
+    // 2. Not enough hunger value -> return false.
+    APurrInPerilAnimalPawn* LocalPawn = GetPawn<APurrInPerilAnimalPawn>();
+    APurrInPerilMainPlayerState* LocalPlayerState = GetPlayerState<APurrInPerilMainPlayerState>();
+    if (!LocalPlayerState || !LocalPawn || !LocalPawn->SmellDiscoverComponent)
+    {
+        return false;
+    }
+
+    UWorld* World = GetWorld();
+    if (!World)
+    {
+        return false;
+    }
+    APurrInPerilMainGameState* GameState = World->GetGameState<APurrInPerilMainGameState>();
+    if (!GameState)
+    {
+        return false;
+    }
+
+    bool bIsActivatingAccurateSmell = LocalPawn->SmellDiscoverComponent->bIsActivatingAccurateSmell;
+    if (bIsActivatingAccurateSmell)
+    {
+        return false;
+    }
+
+    if (LocalPlayerState->CurrentPlayerStateParameter.HungerValue < GameState->InLevelCostParameter.AccurateSmellCost)
+    {
+        return false;
+    }
+
+    return true;
 }

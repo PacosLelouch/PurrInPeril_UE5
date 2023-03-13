@@ -11,6 +11,9 @@ class UUserWidget;
 class AActor;
 class UIndicateColorMapping;
 class UTaskIdentifierMapping;
+class UPlayerMainPanelWidgetBase;
+class UGameplayNumericalSettings;
+class UUserWidgetClassSettings;
 
 /**
 * 
@@ -33,12 +36,17 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilSaveGame* SaveGame = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
-	TSubclassOf<UUserWidget> DefaultInteractTipsClass;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Asset")
 	const UIndicateColorMapping* IndicateColorMapping;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Asset")
 	const UTaskIdentifierMapping* TaskIdentifierMapping;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Asset")
+	const UGameplayNumericalSettings* GameplayNumericalSettings;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Asset")
+	const UUserWidgetClassSettings* UserWidgetClassSettings;
+
 };

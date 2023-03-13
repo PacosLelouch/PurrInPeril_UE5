@@ -4,9 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
+#include "PurrInPerilCommon.h"
 #include "PurrInPerilSmellDiscoverComponent.generated.h"
 
 class UPurrInPerilSmellProduceComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAccurateSmellBeginDynamicDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAccurateSmellEndDynamicDelegate);
 
 /**
 * 
@@ -20,7 +24,7 @@ public:
 
 	virtual void BeginPlay() override;
 
-	virtual void EndPlay(EEndPlayReason::Type EndPlayReason) override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -31,16 +35,22 @@ public:
 	bool bIsActivatingAccurateSmell = false;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "PurrInPeril")
-	float MaxSmellDistance = 200.0f;
+	bool bOverrideSmellDistanceParameter = false;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "PurrInPeril")
-	float MinSmellDistance = 20.0f;
+	FSmellDistanceParameter SmellDistanceParameter;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
 	TMap<UPurrInPerilSmellProduceComponent*, float> PerceivedSmellProducers;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilSmellProduceComponent* PerceivedNearestSmellProducer = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category = "PurrInPeril")
+	FOnAccurateSmellBeginDynamicDelegate OnAccurateSmellBegin;
+
+	UPROPERTY(BlueprintReadOnly, Category = "PurrInPeril")
+	FOnAccurateSmellEndDynamicDelegate OnAccurateSmellEnd;
 
 	FTimerHandle AccurateTimerHandle;
 };

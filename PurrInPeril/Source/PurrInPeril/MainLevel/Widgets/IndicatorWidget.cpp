@@ -69,6 +69,8 @@ FVector2D UIndicatorWidget::CalculateIndicatorScreenPos(FVector Destination)
             }
         }
     }
+    ScreenPos.X += DesignSizeX / 2;
+    ScreenPos.Y += DesignSizeY / 2;
     return ScreenPos;
 }
 
@@ -76,6 +78,11 @@ void UIndicatorWidget::NativePreConstruct()
 {
     Super::NativePreConstruct();
     SetVisibility(ESlateVisibility::HitTestInvisible);
+}
+
+void UIndicatorWidget::NativeConstruct()
+{
+    Super::NativeConstruct();
 }
 
 void UIndicatorWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -90,13 +97,24 @@ void UIndicatorWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime
     //}
     
     UpdateCameraTransform();
+    //UE_LOG(LogTemp, Log, TEXT("[%s] Camera location: <%s>, rotation: <%s>"), *GetName(), *CameraTransform.GetLocation().ToString(), *CameraTransform.GetRotation().Rotator().ToString());
     IndicatorIcon->SetColorAndOpacity(IndicatorColor);
 
-    FVector Location = TestLocation; // TEST //TargetComponent->GetComponentTransform().GetLocation();
+    FVector Location = TargetLocation; // TEST //TargetComponent->GetComponentTransform().GetLocation();
     FVector2D ScreenPos = CalculateIndicatorScreenPos(Location);
+    //UE_LOG(LogTemp, Log, TEXT("[%s] Test location to screen pos: <%s> -> <%s>"), *GetName(), *Location.ToString(), *ScreenPos.ToString());
 
     auto* CanvasSlot = Cast<UCanvasPanelSlot>(Slot);
-    if (CanvasSlot) {
-        CanvasSlot->SetPosition(ScreenPos);
+    if (CanvasSlot) 
+    {
+        int32 ViewPortX, ViewPortY;
+        GetOwningPlayer()->GetViewportSize(ViewPortX, ViewPortY);
+
+        float DesignSizeX = ViewPortX / UWidgetLayoutLibrary::GetViewportScale(this);
+        float DesignSizeY = ViewPortY / UWidgetLayoutLibrary::GetViewportScale(this);
+        if (ScreenPos.X < DesignSizeX && ScreenPos.Y < DesignSizeY && ScreenPos.X > 0 && ScreenPos.Y > 0)
+        {
+            CanvasSlot->SetPosition(ScreenPos);
+        }
     }
 }

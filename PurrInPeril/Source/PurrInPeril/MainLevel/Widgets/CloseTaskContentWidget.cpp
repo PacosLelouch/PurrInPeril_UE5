@@ -9,3 +9,13 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
+
+void UCloseTaskContentWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+}
+
+void UCloseTaskContentWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+}

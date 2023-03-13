@@ -3,6 +3,19 @@
 #include "PurrInPerilAsset.h"
 #include "GameFramework/Actor.h"
 #include "PurrInPerilTaskActorBase.h"
+#include "PurrInPerilGameInstance.h"
+
+const UIndicateColorMapping* UIndicateColorMapping::GetFromGameInstance(UObject* WorldContextObject)
+{
+	if (UWorld* World = WorldContextObject->GetWorld())
+	{
+		if (UPurrInPerilGameInstance* GameInstance = World->GetGameInstance<UPurrInPerilGameInstance>())
+		{
+			return GameInstance->IndicateColorMapping;
+		}
+	}
+	return nullptr;
+}
 
 FLinearColor UIndicateColorMapping::GetColorFromMapping(TSubclassOf<AActor> InClass) const
 {
@@ -17,6 +30,18 @@ FLinearColor UIndicateColorMapping::GetColorFromMapping(TSubclassOf<AActor> InCl
 	return DefaultColor;
 }
 
+const UTaskIdentifierMapping* UTaskIdentifierMapping::GetFromGameInstance(UObject* WorldContextObject)
+{
+	if (UWorld* World = WorldContextObject->GetWorld())
+	{
+		if (UPurrInPerilGameInstance* GameInstance = World->GetGameInstance<UPurrInPerilGameInstance>())
+		{
+			return GameInstance->TaskIdentifierMapping;
+		}
+	}
+	return nullptr;
+}
+
 FPurrInPerilTaskIdentifier UTaskIdentifierMapping::GetIdentifier(TSubclassOf<APurrInPerilTaskActorBase> InClass) const
 {
 	for (TSubclassOf<APurrInPerilTaskActorBase> TempClass = InClass; TempClass != APurrInPerilTaskActorBase::StaticClass(); TempClass = TempClass->GetSuperClass())
@@ -28,4 +53,48 @@ FPurrInPerilTaskIdentifier UTaskIdentifierMapping::GetIdentifier(TSubclassOf<APu
 		}
 	}
 	return DefaultTaskIdentifier;
+}
+
+const UGameplayNumericalSettings* UGameplayNumericalSettings::GetFromGameInstance(UObject* WorldContextObject)
+{
+	if (UWorld* World = WorldContextObject->GetWorld())
+	{
+		if (UPurrInPerilGameInstance* GameInstance = World->GetGameInstance<UPurrInPerilGameInstance>())
+		{
+			return GameInstance->GameplayNumericalSettings;
+		}
+	}
+	return nullptr;
+}
+
+const UUserWidgetClassSettings* UUserWidgetClassSettings::GetFromGameInstance(UObject* WorldContextObject)
+{
+	if (UWorld* World = WorldContextObject->GetWorld())
+	{
+		if (UPurrInPerilGameInstance* GameInstance = World->GetGameInstance<UPurrInPerilGameInstance>())
+		{
+			return GameInstance->UserWidgetClassSettings;
+		}
+	}
+	return nullptr;
+}
+
+const UIndicateColorMapping* UPurrInPerilAssetLibrary::GetIndicateColorMappingFromGameInstance(UObject* WorldContextObject)
+{
+	return UIndicateColorMapping::GetFromGameInstance(WorldContextObject);
+}
+
+const UTaskIdentifierMapping* UPurrInPerilAssetLibrary::GetTaskIdentifierMappingFromGameInstance(UObject* WorldContextObject)
+{
+	return UTaskIdentifierMapping::GetFromGameInstance(WorldContextObject);
+}
+
+const UGameplayNumericalSettings* UPurrInPerilAssetLibrary::GetGameplayNumericalSettingsFromGameInstance(UObject* WorldContextObject)
+{
+	return UGameplayNumericalSettings::GetFromGameInstance(WorldContextObject);
+}
+
+const UUserWidgetClassSettings* UPurrInPerilAssetLibrary::GetUserWidgetClassSettingsFromGameInstance(UObject* WorldContextObject)
+{
+	return UUserWidgetClassSettings::GetFromGameInstance(WorldContextObject);
 }

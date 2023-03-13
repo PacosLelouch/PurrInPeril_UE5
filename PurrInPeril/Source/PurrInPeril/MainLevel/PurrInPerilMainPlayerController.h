@@ -8,6 +8,8 @@
 
 class UUserWidget;
 class APurrInPerilTaskActorBase;
+class UPlayerMainPanelWidgetBase;
+
 
 /**
 * 
@@ -21,7 +23,11 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void SetupInputComponent() override;
 
 	// Show interactable tips in trigger box.
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
@@ -37,6 +43,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	void CloseWidgetUnlockMovement(UUserWidget* UserWidget);
 
+	// Show accurate indicators (OnAccurateSmellBegin).
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	void ShowAccurateIndicatorWidget();
+
+	// Hide accurate indicators (OnAccurateSmellEnd).
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	void HideAccurateIndicatorWidget();
+
 	// Should map to "E" button.
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	bool DoAccurateSmell();
@@ -44,17 +58,35 @@ public:
 	UFUNCTION(BlueprintPure, Category = "PurrInPeril")
 	bool CheckAccurateSmellValid();
 
-	//UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
-	//UUserWidget* InteractTipsWidget = nullptr;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
+	bool bIsInteractingWithObject = false;
+	
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
+	UPlayerMainPanelWidgetBase* PlayerMainPanelWidget = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril|Widget")
+	TSubclassOf<UPlayerMainPanelWidgetBase> CustomPlayerMainPanelWidgetClass;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
 	APurrInPerilTaskActorBase* InteractingTaskActor = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
+	UUserWidget* IndicatorPanelWidget = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril|Widget")
+	TSubclassOf<UUserWidget> CustomIndicatorPanelWidgetClass;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
 	int32 InteractableWidgetZOrder = 4;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
-	int32 WidgetLockMovementZOrder = 0;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
+	int32 IndicatorWidgetZOrder = 3;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
+	int32 WidgetLockMovementZOrder = 1;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
+	int32 PlayerMainPanelWidgetZOrder = 0;
 
 	bool bLastIgnoreMoveInput = false;
 };
