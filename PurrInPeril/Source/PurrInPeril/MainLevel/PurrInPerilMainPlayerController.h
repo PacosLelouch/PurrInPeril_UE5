@@ -29,6 +29,9 @@ public:
 
 	virtual void SetupInputComponent() override;
 
+	UFUNCTION(BlueprintPure, Category = "PurrInPeril")
+	APurrInPerilAnimalPawn* GetControlledAnimalPawn() const;
+
 	// Show interactable tips in trigger box.
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	bool ActivateInteractableWidget(APurrInPerilTaskActorBase* TaskActorToActivate);

@@ -21,3 +21,15 @@ void APurrInPerilMainPlayerState::BeginPlay()
     }
     CurrentPlayerStateParameter = InitialPlayerStateParameter;
 }
+
+bool APurrInPerilMainPlayerState::AddSanityValue(float AddValue)
+{
+    CurrentPlayerStateParameter.SanityValue += AddValue;
+    return true;
+}
+
+bool APurrInPerilMainPlayerState::AddHungerValue(float AddValue)
+{
+    CurrentPlayerStateParameter.HungerValue += AddValue;
+    return true;
+}

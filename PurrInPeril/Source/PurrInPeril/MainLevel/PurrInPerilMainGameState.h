@@ -21,18 +21,28 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	UFUNCTION(BlueprintGetter, Category = "PurrInPeril")
+	const FInLevelCostParameter& GetInLevelCostParameter() const { return InLevelCostParameter; }
+
+	UFUNCTION(BlueprintGetter, Category = "PurrInPeril")
+	const FInLevelTimeParameter& GetInLevelTimeParameter() const { return InLevelTimeParameter; }
+
+	UFUNCTION(BlueprintGetter, Category = "PurrInPeril")
+	float GetCurrentCountdownInSecond() const { return CurrentCountdownInSecond; }
+
+protected:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
 	bool bOverrideInLevelCostParameter = false;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, BlueprintGetter = "GetInLevelCostParameter", Category = "PurrInPeril")
 	FInLevelCostParameter InLevelCostParameter;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
 	bool bOverrideInLevelTimeParameter = false;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, BlueprintGetter = "GetInLevelTimeParameter", Category = "PurrInPeril")
 	FInLevelTimeParameter InLevelTimeParameter;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, BlueprintGetter = "GetCurrentCountdownInSecond", Category = "PurrInPeril")
 	float CurrentCountdownInSecond = 180.0f;
 };

@@ -111,6 +111,11 @@ void APurrInPerilMainPlayerController::SetupInputComponent()
     Super::SetupInputComponent();
 }
 
+APurrInPerilAnimalPawn* APurrInPerilMainPlayerController::GetControlledAnimalPawn() const
+{
+    return Cast<APurrInPerilAnimalPawn>(GetPawn());
+}
+
 bool APurrInPerilMainPlayerController::ActivateInteractableWidget(APurrInPerilTaskActorBase* TaskActorToActivate)
 {
     if (!TaskActorToActivate)
@@ -229,8 +234,8 @@ bool APurrInPerilMainPlayerController::DoAccurateSmell()
     // 2. If yes,
     //    3. Decrease hunger value in PlayerState.
     //    4. SmellDiscoverComponent ActivateAccurateSmell(Time).
-    LocalPlayerState->CurrentPlayerStateParameter.HungerValue -= GameState->InLevelCostParameter.AccurateSmellCost;
-    LocalPawn->SmellDiscoverComponent->ActivateAccurateSmell(GameState->InLevelTimeParameter.AccurateSmellDurationInSecond);
+    LocalPlayerState->AddHungerValue(-GameState->GetInLevelCostParameter().AccurateSmellCost);
+    LocalPawn->SmellDiscoverComponent->ActivateAccurateSmell(GameState->GetInLevelTimeParameter().AccurateSmellDurationInSecond);
 
     return true;
 }
@@ -263,7 +268,7 @@ bool APurrInPerilMainPlayerController::CheckAccurateSmellValid()
         return false;
     }
 
-    if (LocalPlayerState->CurrentPlayerStateParameter.HungerValue < GameState->InLevelCostParameter.AccurateSmellCost)
+    if (LocalPlayerState->GetCurrentPlayerStateParameter().HungerValue < GameState->GetInLevelCostParameter().AccurateSmellCost)
     {
         return false;
     }
