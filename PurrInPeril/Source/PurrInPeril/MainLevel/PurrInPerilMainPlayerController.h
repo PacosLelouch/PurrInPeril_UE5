@@ -8,6 +8,7 @@
 
 class UUserWidget;
 class APurrInPerilTaskActorBase;
+class UPurrInPerilInteractableComponent;
 class UPlayerMainPanelWidgetBase;
 
 
@@ -37,11 +38,11 @@ public:
 
 	// Show interactable tips in trigger box.
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
-	bool ActivateInteractableWidget(APurrInPerilTaskActorBase* TaskActorToActivate);
+	bool ActivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToOpenInteraction);
 
 	// Hide interactable tips out of trigger box.
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
-	bool DeactivateInteractableWidget(APurrInPerilTaskActorBase* TaskActorToActivate);
+	bool DeactivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToCloseInteraction);
 
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	void OpenWidgetLockMovement(UUserWidget* UserWidget);
@@ -68,13 +69,19 @@ public:
 	bool bIsInteractingWithObject = false;
 	
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
-	UPlayerMainPanelWidgetBase* PlayerMainPanelWidget = nullptr;
+	UPlayerMainPanelWidgetBase* PlayerMainBackgroundPanelWidget = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
+	UPlayerMainPanelWidgetBase* PlayerMainForegroundPanelWidget = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril|Widget")
-	TSubclassOf<UPlayerMainPanelWidgetBase> CustomPlayerMainPanelWidgetClass;
+	TSubclassOf<UPlayerMainPanelWidgetBase> CustomPlayerMainBackgroundPanelWidgetClass;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril|Widget")
+	TSubclassOf<UPlayerMainPanelWidgetBase> CustomPlayerMainForegroundPanelWidgetClass;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
-	APurrInPerilTaskActorBase* InteractingTaskActor = nullptr;
+	UPurrInPerilInteractableComponent* InteractingComponent = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
 	UUserWidget* IndicatorPanelWidget = nullptr;
@@ -92,7 +99,10 @@ public:
 	int32 WidgetLockMovementZOrder = 1;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 PlayerMainPanelWidgetZOrder = 0;
+	int32 PlayerMainBackgroundPanelWidgetZOrder = 0;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
+	int32 PlayerMainForegroundPanelWidgetZOrder = 100;
 
 	UPROPERTY(BlueprintAssignable, Category = "PurrInPeril|Task")
 	FOnPartOfTaskCompleteDynamicDelegate OnPartOfTaskComplete;

@@ -8,6 +8,7 @@
 #include "PurrInPerilMainGameState.h"
 #include "PurrInPerilMainPlayerState.h"
 #include "CustomComponents/PurrInPerilSmellDiscoverComponent.h"
+#include "CustomComponents/PurrInPerilInteractableComponent.h"
 #include "Subsystems/PurrInPerilSmellManagementSubsystem.h"
 #include "Subsystems/PurrInPerilTaskManagementSubsystem.h"
 #include "Widgets/PlayerMainPanelWidgetBase.h"
@@ -26,12 +27,20 @@ void APurrInPerilMainPlayerController::BeginPlay()
 
     if (const UUserWidgetClassSettings* UserWidgetClassSettings = UUserWidgetClassSettings::GetFromGameInstance(this))
     {
-        if (!CustomPlayerMainPanelWidgetClass)
+        if (!CustomPlayerMainBackgroundPanelWidgetClass)
         {
-            CustomPlayerMainPanelWidgetClass = UserWidgetClassSettings->DefaultPlayerMainPanelWidgetClass;
-            if (!CustomPlayerMainPanelWidgetClass)
+            CustomPlayerMainBackgroundPanelWidgetClass = UserWidgetClassSettings->DefaultPlayerMainBackgroundPanelWidgetClass;
+            if (!CustomPlayerMainBackgroundPanelWidgetClass)
             {
-                CustomPlayerMainPanelWidgetClass = UPlayerMainPanelWidgetBase::StaticClass();
+                CustomPlayerMainBackgroundPanelWidgetClass = UPlayerMainPanelWidgetBase::StaticClass();
+            }
+        }
+        if (!CustomPlayerMainForegroundPanelWidgetClass)
+        {
+            CustomPlayerMainForegroundPanelWidgetClass = UserWidgetClassSettings->DefaultPlayerMainForegroundPanelWidgetClass;
+            if (!CustomPlayerMainForegroundPanelWidgetClass)
+            {
+                CustomPlayerMainForegroundPanelWidgetClass = UPlayerMainPanelWidgetBase::StaticClass();
             }
         }
 
@@ -45,11 +54,16 @@ void APurrInPerilMainPlayerController::BeginPlay()
         }
     }
 
-    if (!PlayerMainPanelWidget)
+    if (!PlayerMainBackgroundPanelWidget)
     {
-        PlayerMainPanelWidget = CreateWidget< UPlayerMainPanelWidgetBase>(this, CustomPlayerMainPanelWidgetClass);
+        PlayerMainBackgroundPanelWidget = CreateWidget< UPlayerMainPanelWidgetBase>(this, CustomPlayerMainBackgroundPanelWidgetClass);
     }
-    PlayerMainPanelWidget->AddToViewport(PlayerMainPanelWidgetZOrder);
+    PlayerMainBackgroundPanelWidget->AddToViewport(PlayerMainBackgroundPanelWidgetZOrder);
+    if (!PlayerMainForegroundPanelWidget)
+    {
+        PlayerMainForegroundPanelWidget = CreateWidget< UPlayerMainPanelWidgetBase>(this, CustomPlayerMainForegroundPanelWidgetClass);
+    }
+    PlayerMainForegroundPanelWidget->AddToViewport(PlayerMainForegroundPanelWidgetZOrder);
 
     if (!IndicatorPanelWidget)
     {
@@ -67,9 +81,13 @@ void APurrInPerilMainPlayerController::BeginPlay()
 
 void APurrInPerilMainPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if (PlayerMainPanelWidget)
+    if (PlayerMainForegroundPanelWidget)
     {
-        PlayerMainPanelWidget->RemoveFromParent();
+        PlayerMainForegroundPanelWidget->RemoveFromParent();
+    }
+    if (PlayerMainBackgroundPanelWidget)
+    {
+        PlayerMainBackgroundPanelWidget->RemoveFromParent();
     }
     if (IndicatorPanelWidget)
     {
@@ -116,18 +134,18 @@ APurrInPerilAnimalPawn* APurrInPerilMainPlayerController::GetControlledAnimalPaw
     return Cast<APurrInPerilAnimalPawn>(GetPawn());
 }
 
-bool APurrInPerilMainPlayerController::ActivateInteractableWidget(APurrInPerilTaskActorBase* TaskActorToActivate)
+bool APurrInPerilMainPlayerController::ActivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToOpenInteraction)
 {
-    if (!TaskActorToActivate)
+    if (!ComponentToOpenInteraction)
     {
         return false;
     }
 
-    if (InteractingTaskActor)
+    if (InteractingComponent)
     {
-        if (InteractingTaskActor != TaskActorToActivate)
+        if (InteractingComponent != ComponentToOpenInteraction)
         {
-            UUserWidget** HoldingWidgetPtr = InteractingTaskActor->PlayerToInteractTipsWidgets.Find(this);
+            UUserWidget** HoldingWidgetPtr = InteractingComponent->PlayerToInteractTipsWidgets.Find(this);
             if (HoldingWidgetPtr)
             {
                 UUserWidget* HoldingWidget = *HoldingWidgetPtr;
@@ -136,14 +154,14 @@ bool APurrInPerilMainPlayerController::ActivateInteractableWidget(APurrInPerilTa
         }
     }
 
-    UUserWidget** HoldingWidgetPtr = TaskActorToActivate->PlayerToInteractTipsWidgets.Find(this);
+    UUserWidget** HoldingWidgetPtr = ComponentToOpenInteraction->PlayerToInteractTipsWidgets.Find(this);
     if (HoldingWidgetPtr)
     {
-        //if (InteractingTaskActor != TaskActorToActivate)
+        //if (InteractingComponent != ComponentToOpenInteraction)
         {
             UUserWidget* HoldingWidget = *HoldingWidgetPtr;
             HoldingWidget->AddToViewport(InteractableWidgetZOrder);
-            InteractingTaskActor = TaskActorToActivate;
+            InteractingComponent = ComponentToOpenInteraction;
         }
     }
     // Do not create widget for task actor. It should create the widget before activation.
@@ -151,18 +169,18 @@ bool APurrInPerilMainPlayerController::ActivateInteractableWidget(APurrInPerilTa
     return true;
 }
 
-bool APurrInPerilMainPlayerController::DeactivateInteractableWidget(APurrInPerilTaskActorBase* TaskActorToActivate)
+bool APurrInPerilMainPlayerController::DeactivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToCloseInteraction)
 {
-    if (!TaskActorToActivate)
+    if (!ComponentToCloseInteraction)
     {
         return false;
     }
 
-    if (InteractingTaskActor)
+    if (InteractingComponent)
     {
-        if (InteractingTaskActor == TaskActorToActivate)
+        if (InteractingComponent == ComponentToCloseInteraction)
         {
-            UUserWidget** HoldingWidgetPtr = InteractingTaskActor->PlayerToInteractTipsWidgets.Find(this);
+            UUserWidget** HoldingWidgetPtr = InteractingComponent->PlayerToInteractTipsWidgets.Find(this);
             if (HoldingWidgetPtr)
             {
                 UUserWidget* HoldingWidget = *HoldingWidgetPtr;
@@ -186,7 +204,7 @@ void APurrInPerilMainPlayerController::OpenWidgetLockMovement(UUserWidget* UserW
         SetIgnoreMoveInput(true);
         SetIgnoreLookInput(true);
         SetShowMouseCursor(true);
-        DeactivateInteractableWidget(InteractingTaskActor);
+        DeactivateInteractableWidget(InteractingComponent);
         bIsInteractingWithObject = true;
     }
 }
@@ -203,7 +221,7 @@ void APurrInPerilMainPlayerController::CloseWidgetUnlockMovement(UUserWidget* Us
     SetIgnoreLookInput(bLastIgnoreMoveInput);
     SetShowMouseCursor(bLastIgnoreMoveInput);
     bLastIgnoreMoveInput = IsMoveInputIgnored();
-    ActivateInteractableWidget(InteractingTaskActor);
+    ActivateInteractableWidget(InteractingComponent);
     bIsInteractingWithObject = false;
 }
 

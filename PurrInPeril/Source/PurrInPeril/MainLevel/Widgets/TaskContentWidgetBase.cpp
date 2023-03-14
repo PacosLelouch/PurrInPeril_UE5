@@ -51,6 +51,6 @@ void UTaskContentWidgetBase::OnCloseWidgetButtonClicked()
 {
     if (TaskOwner)
     {
-        TaskOwner->CloseInteraction(GetOwningPlayer());
+        IInteractableActorInterface::Execute_CloseInteraction(TaskOwner, GetOwningPlayer());
     }
 }

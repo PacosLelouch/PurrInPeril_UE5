@@ -79,7 +79,10 @@ public:
 	static const UUserWidgetClassSettings* GetFromGameInstance(UObject* WorldContextObject);
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
-	TSubclassOf<UPlayerMainPanelWidgetBase> DefaultPlayerMainPanelWidgetClass;
+	TSubclassOf<UPlayerMainPanelWidgetBase> DefaultPlayerMainBackgroundPanelWidgetClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	TSubclassOf<UPlayerMainPanelWidgetBase> DefaultPlayerMainForegroundPanelWidgetClass;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
 	TSubclassOf<UUserWidget> DefaultInteractTipsClass;
