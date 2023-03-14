@@ -46,10 +46,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilSmellProduceComponent* PerceivedNearestSmellProducer = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, Category = "PurrInPeril")
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "PurrInPeril")
 	FOnAccurateSmellBeginDynamicDelegate OnAccurateSmellBegin;
 
-	UPROPERTY(BlueprintReadOnly, Category = "PurrInPeril")
+	UPROPERTY(BlueprintAssignable, BlueprintReadOnly, Category = "PurrInPeril")
 	FOnAccurateSmellEndDynamicDelegate OnAccurateSmellEnd;
 
 	FTimerHandle AccurateTimerHandle;

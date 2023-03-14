@@ -11,6 +11,9 @@ class APurrInPerilTaskActorBase;
 class UPlayerMainPanelWidgetBase;
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPartOfTaskCompleteDynamicDelegate, APurrInPerilTaskActorBase*, TaskActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPartOfTaskResetDynamicDelegate, APurrInPerilTaskActorBase*, TaskActor);
+
 /**
 * 
 */
@@ -90,6 +93,12 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
 	int32 PlayerMainPanelWidgetZOrder = 0;
+
+	UPROPERTY(BlueprintAssignable, Category = "PurrInPeril|Task")
+	FOnPartOfTaskCompleteDynamicDelegate OnPartOfTaskComplete;
+
+	UPROPERTY(BlueprintAssignable, Category = "PurrInPeril|Task")
+	FOnPartOfTaskResetDynamicDelegate OnPartOfTaskReset;
 
 	bool bLastIgnoreMoveInput = false;
 };

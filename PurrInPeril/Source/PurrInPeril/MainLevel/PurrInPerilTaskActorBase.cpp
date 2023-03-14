@@ -164,6 +164,11 @@ void APurrInPerilTaskActorBase::CompleteThisPartOfTask_Implementation(AControlle
     {
         PlayerToPartOfTaskCompleted.Add(Controller, true);
     }
+    SmellProduceComponent->bWithSmell = false;
+    if (APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller))
+    {
+        PlayerController->OnPartOfTaskComplete.Broadcast(this);
+    }
 }
 
 void APurrInPerilTaskActorBase::ResetThisPartOfTask(AController* Controller)
@@ -182,6 +187,11 @@ void APurrInPerilTaskActorBase::ResetThisPartOfTask_Implementation(AController* 
     else
     {
         PlayerToPartOfTaskCompleted.Add(Controller, false);
+    }
+    SmellProduceComponent->bWithSmell = true;
+    if (APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller))
+    {
+        PlayerController->OnPartOfTaskReset.Broadcast(this);
     }
 }
 

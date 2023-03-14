@@ -38,6 +38,6 @@ void APurrInPerilMainGameState::Tick(float DeltaSeconds)
     }
     if (!World->IsPaused() && CurrentCountdownInSecond > 0.0f)
     {
-        CurrentCountdownInSecond -= DeltaSeconds;
+        CurrentCountdownInSecond = FMath::Max(0.0f, CurrentCountdownInSecond - DeltaSeconds);
     }
 }
