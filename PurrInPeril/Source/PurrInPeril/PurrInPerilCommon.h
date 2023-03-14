@@ -63,6 +63,24 @@ struct PURRINPERIL_API FInLevelCostParameter
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float AccurateSmellCost = 20.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	float SanityValueLostPerEnemyPerSecond = 1.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	float HungerValueLostPerSecond = 1.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	int32 CatFoodDurability = 1;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	float CatFoodRecoveryHungerValue = 20.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	int32 CatMintDurability = -1;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	float CatMintRecoverySanityValue = 20.0f;
 };
 
 USTRUCT(BlueprintType)

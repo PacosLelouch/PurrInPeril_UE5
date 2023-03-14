@@ -19,10 +19,6 @@ APurrInPerilTaskActorBase::APurrInPerilTaskActorBase(const FObjectInitializer& O
 
     SmellProduceComponent = CreateDefaultSubobject<UPurrInPerilSmellProduceComponent>(TEXT("SmellProduceComponent"));
     SmellProduceComponent->SetupAttachment(RootComponent);
-
-    ////Register Events
-    //OnActorBeginOverlap.AddDynamic(this, &APurrInPerilTaskActorBase::OnOverlapBegin);
-    //OnActorEndOverlap.AddDynamic(this, &APurrInPerilTaskActorBase::OnOverlapEnd);
 }
 
 void APurrInPerilTaskActorBase::BeginPlay()
@@ -55,89 +51,6 @@ UPurrInPerilSmellProduceComponent* APurrInPerilTaskActorBase::GetSmellProduceCom
 {
     return SmellProduceComponent;
 }
-
-//void APurrInPerilTaskActorBase::OnOverlapBegin(AActor* OverlappedActor, AActor* OtherActor)
-//{
-//    OnOverlapBegin_Implementation(OverlappedActor, OtherActor);
-//    BP_OnOverlapBegin(OverlappedActor, OtherActor);
-//}
-//
-//void APurrInPerilTaskActorBase::OnOverlapEnd(AActor* OverlappedActor, AActor* OtherActor)
-//{
-//    OnOverlapEnd_Implementation(OverlappedActor, OtherActor);
-//    BP_OnOverlapEnd(OverlappedActor, OtherActor);
-//}
-//
-//void APurrInPerilTaskActorBase::OnOverlapBegin_Implementation(AActor* OverlappedActor, AActor* OtherActor)
-//{
-//    APawn* Pawn = Cast<APawn>(OtherActor);
-//    if (Pawn)
-//    {
-//        AController* Controller = Pawn->GetController();
-//        if (Controller)
-//        {
-//            APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller);
-//            if (PlayerController)
-//            {
-//                UUserWidget* WidgetForPlayer = nullptr;
-//                UUserWidget** WidgetForPlayerPtr = PlayerToInteractTipsWidgets.Find(PlayerController);
-//                if (!WidgetForPlayerPtr)
-//                {
-//                    WidgetForPlayer = CreateWidget(PlayerController, CustomInteractTipsClass);
-//                    PlayerToInteractTipsWidgets.Add(PlayerController, WidgetForPlayer);
-//                }
-//                else
-//                {
-//                    WidgetForPlayer = *WidgetForPlayerPtr;
-//                }
-//                PlayerController->ActivateInteractableWidget(this);
-//            }
-//        }
-//    }
-//}
-//
-//void APurrInPerilTaskActorBase::OnOverlapEnd_Implementation(AActor* OverlappedActor, AActor* OtherActor)
-//{
-//    APawn* Pawn = Cast<APawn>(OtherActor);
-//    if (Pawn)
-//    {
-//        AController* Controller = Pawn->GetController();
-//        if (Controller)
-//        {
-//            APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller);
-//            if (PlayerController)
-//            {
-//                UUserWidget* WidgetForPlayer = nullptr;
-//                UUserWidget** WidgetForPlayerPtr = PlayerToInteractTipsWidgets.Find(PlayerController);
-//                if (WidgetForPlayerPtr)
-//                {
-//                    WidgetForPlayer = *WidgetForPlayerPtr;
-//                }
-//                PlayerController->DeactivateInteractableWidget(this);
-//            }
-//        }
-//    }
-//}
-
-//void APurrInPerilTaskActorBase::OpenInteraction(AController* Controller)
-//{
-//    OpenInteraction_Implementation(Controller);
-//    BP_OpenInteraction(Controller);
-//}
-//
-//void APurrInPerilTaskActorBase::OpenInteraction_Implementation(AController* Controller)
-//{
-//}
-//
-//void APurrInPerilTaskActorBase::CloseInteraction(AController* Controller)
-//{
-//    CloseInteraction_Implementation(Controller);
-//    BP_CloseInteraction(Controller);
-//}
-//
-//void APurrInPerilTaskActorBase::CloseInteraction_Implementation(AController* Controller)
-//{
-//}
 
 void APurrInPerilTaskActorBase::CompleteThisPartOfTask(AController* Controller)
 {

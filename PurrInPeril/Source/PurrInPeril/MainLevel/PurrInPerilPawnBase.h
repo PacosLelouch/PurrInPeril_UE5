@@ -12,7 +12,7 @@ class UPurrInPerilMovementComponent;
 /**
 * 
 */
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(Abstract, BlueprintType, Blueprintable)
 class PURRINPERIL_API APurrInPerilPawnBase : public ACharacter
 {
 	GENERATED_BODY()

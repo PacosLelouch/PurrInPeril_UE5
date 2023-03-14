@@ -58,10 +58,10 @@ public:
 	bool IsThisPartOfTaskCompleted(AController* Controller) const;
 	//~ End task.
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Task")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilInteractableComponent* InteractableComponent = nullptr;
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Task")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilSmellProduceComponent* SmellProduceComponent = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Task")

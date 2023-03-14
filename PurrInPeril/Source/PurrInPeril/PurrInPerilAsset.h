@@ -28,7 +28,7 @@ public:
 
 protected:
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget")
 	TMap<TSubclassOf<AActor>, FLinearColor> Mapping;
 };
 
@@ -47,7 +47,7 @@ public:
 
 protected:
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
+	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Task")
 	TMap<TSubclassOf<APurrInPerilTaskActorBase>, FPurrInPerilTaskIdentifier> Mapping;
 };
 

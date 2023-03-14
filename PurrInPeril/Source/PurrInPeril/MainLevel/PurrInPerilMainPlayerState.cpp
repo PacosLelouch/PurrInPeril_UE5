@@ -24,12 +24,20 @@ void APurrInPerilMainPlayerState::BeginPlay()
 
 bool APurrInPerilMainPlayerState::AddSanityValue(float AddValue)
 {
-    CurrentPlayerStateParameter.SanityValue += AddValue;
+    if (CurrentPlayerStateParameter.SanityValue <= 0 || CurrentPlayerStateParameter.SanityValue >= InitialPlayerStateParameter.SanityValue)
+    {
+        return false;
+    }
+    CurrentPlayerStateParameter.SanityValue = FMath::Clamp(CurrentPlayerStateParameter.SanityValue + AddValue, 0, InitialPlayerStateParameter.SanityValue);
     return true;
 }
 
 bool APurrInPerilMainPlayerState::AddHungerValue(float AddValue)
 {
-    CurrentPlayerStateParameter.HungerValue += AddValue;
+    if (CurrentPlayerStateParameter.HungerValue <= 0 || CurrentPlayerStateParameter.HungerValue >= InitialPlayerStateParameter.HungerValue)
+    {
+        return false;
+    }
+    CurrentPlayerStateParameter.HungerValue = FMath::Clamp(CurrentPlayerStateParameter.HungerValue + AddValue, 0, InitialPlayerStateParameter.HungerValue);
     return true;
 }

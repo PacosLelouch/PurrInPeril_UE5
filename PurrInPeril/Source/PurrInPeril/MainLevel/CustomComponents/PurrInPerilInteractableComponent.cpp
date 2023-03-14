@@ -51,6 +51,14 @@ void UPurrInPerilInteractableComponent::EndPlay(const EEndPlayReason::Type EndPl
         OwnerActor->OnActorBeginOverlap.RemoveDynamic(this, &UPurrInPerilInteractableComponent::OnActorOverlapBegin);
         OwnerActor->OnActorEndOverlap.RemoveDynamic(this, &UPurrInPerilInteractableComponent::OnActorOverlapEnd);
     }
+    for (auto& PlayerToWidgetPair : PlayerToInteractTipsWidgets)
+    {
+        APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(PlayerToWidgetPair.Key);
+        if (PlayerController)
+        {
+            PlayerController->DeactivateInteractableWidget(this);
+        }
+    }
     Super::EndPlay(EndPlayReason);
 }
 

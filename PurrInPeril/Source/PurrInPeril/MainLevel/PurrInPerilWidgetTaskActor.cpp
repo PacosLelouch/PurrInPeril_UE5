@@ -14,6 +14,7 @@ APurrInPerilWidgetTaskActor::APurrInPerilWidgetTaskActor(const FObjectInitialize
 
 void APurrInPerilWidgetTaskActor::OpenInteraction_Implementation(AController* Controller)
 {
+	Super::OpenInteraction_Implementation(Controller);
 	APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller);
 	if (PlayerController)
 	{
@@ -45,4 +46,5 @@ void APurrInPerilWidgetTaskActor::CloseInteraction_Implementation(AController* C
 			PlayerController->CloseWidgetUnlockMovement(WidgetForPlayer);
 		}
 	}
+	Super::CloseInteraction_Implementation(Controller);
 }
