@@ -99,6 +99,12 @@ class PURRINPERIL_API UPurrInPerilAssetLibrary : public UBlueprintFunctionLibrar
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (PurrInPerilTaskIdentifier)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "PurrInPeril")
+	static bool EqualEqual_PurrInPerilTaskIdentifierPurrInPerilTaskIdentifier(FPurrInPerilTaskIdentifier A, FPurrInPerilTaskIdentifier B);
+	
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "NotEqual (PurrInPerilTaskIdentifier)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "PurrInPeril")
+	static bool NotEqual_PurrInPerilTaskIdentifierPurrInPerilTaskIdentifier(FPurrInPerilTaskIdentifier A, FPurrInPerilTaskIdentifier B);
+
 	UFUNCTION(BlueprintPure, Category = "PurrInPeril", meta = (WorldContext = "WorldContextObject"))
 	static const UIndicateColorMapping* GetIndicateColorMappingFromGameInstance(UObject* WorldContextObject);
 

@@ -79,6 +79,16 @@ const UUserWidgetClassSettings* UUserWidgetClassSettings::GetFromGameInstance(UO
 	return nullptr;
 }
 
+bool UPurrInPerilAssetLibrary::EqualEqual_PurrInPerilTaskIdentifierPurrInPerilTaskIdentifier(FPurrInPerilTaskIdentifier A, FPurrInPerilTaskIdentifier B)
+{
+	return A == B;
+}
+
+bool UPurrInPerilAssetLibrary::NotEqual_PurrInPerilTaskIdentifierPurrInPerilTaskIdentifier(FPurrInPerilTaskIdentifier A, FPurrInPerilTaskIdentifier B)
+{
+	return !(A == B);
+}
+
 const UIndicateColorMapping* UPurrInPerilAssetLibrary::GetIndicateColorMappingFromGameInstance(UObject* WorldContextObject)
 {
 	return UIndicateColorMapping::GetFromGameInstance(WorldContextObject);

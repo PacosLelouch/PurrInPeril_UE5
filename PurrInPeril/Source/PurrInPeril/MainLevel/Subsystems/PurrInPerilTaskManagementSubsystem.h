@@ -20,6 +20,18 @@ public:
 	TSet<APurrInPerilTaskActorBase*> Set;
 };
 
+USTRUCT(BlueprintType)
+struct PURRINPERIL_API FPurrInPerilTaskNum
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Task")
+	int32 TaskNum = 0;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Task")
+	int32 TaskCompleteNum = 0;
+};
+
 /**
 * 
 */
@@ -48,7 +60,10 @@ public:
 	bool GetTaskIdentifier(APurrInPerilTaskActorBase* TaskActor, FPurrInPerilTaskIdentifier& OutTaskIdentifier) const;
 
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
-	FIntPoint GetTaskNumAndCompleteCount(const FPurrInPerilTaskIdentifier& TaskIdentifier, AController* Controller) const;
+	FPurrInPerilTaskNum GetTaskNumAndCompleteCount(const FPurrInPerilTaskIdentifier& TaskIdentifier, AController* Controller) const;
+
+	//UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
+	//	;
 
 protected:
 	// Is it useful?

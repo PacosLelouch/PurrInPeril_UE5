@@ -107,9 +107,9 @@ bool UPurrInPerilTaskManagementSubsystem::GetTaskIdentifier(APurrInPerilTaskActo
     return true;
 }
 
-FIntPoint UPurrInPerilTaskManagementSubsystem::GetTaskNumAndCompleteCount(const FPurrInPerilTaskIdentifier& TaskIdentifier, AController* Controller) const
+FPurrInPerilTaskNum UPurrInPerilTaskManagementSubsystem::GetTaskNumAndCompleteCount(const FPurrInPerilTaskIdentifier& TaskIdentifier, AController* Controller) const
 {
-    FIntPoint Point = FIntPoint(EForceInit::ForceInit);
+    FPurrInPerilTaskNum Point = FPurrInPerilTaskNum();
     const FPurrInPerilTaskActorSet* TaskActorSetPtr = TaskActors.Find(TaskIdentifier);
     if (!TaskActorSetPtr)
     {
@@ -117,12 +117,12 @@ FIntPoint UPurrInPerilTaskManagementSubsystem::GetTaskNumAndCompleteCount(const 
     }
 
     const FPurrInPerilTaskActorSet& TaskActorSet = *TaskActorSetPtr;
-    Point.X = TaskActorSet.Set.Num();
+    Point.TaskNum = TaskActorSet.Set.Num();
     for (const APurrInPerilTaskActorBase* Actor : TaskActorSet.Set)
     {
         if (Actor->IsThisPartOfTaskCompleted(Controller))
         {
-            ++Point.Y;
+            ++Point.TaskCompleteNum;
         }
     }
     return Point;

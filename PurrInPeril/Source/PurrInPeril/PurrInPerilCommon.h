@@ -19,6 +19,11 @@ public:
 
 	bool operator==(const FPurrInPerilTaskIdentifier& Other) const
 	{
+		return Equals(Other);
+	}
+
+	bool Equals(const FPurrInPerilTaskIdentifier& Other) const
+	{
 		return ID == Other.ID &&
 			TaskName == Other.TaskName;
 	}
