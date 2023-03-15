@@ -50,10 +50,10 @@ struct PURRINPERIL_API FSmellDistanceParameter
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
-	float MaxSmellDistance = 200.0f;
+	float MaxSmellDistance = 5000.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
-	float MinSmellDistance = 20.0f;
+	float MinSmellDistance = 200.0f;
 };
 
 USTRUCT(BlueprintType)
@@ -63,9 +63,6 @@ struct PURRINPERIL_API FInLevelCostParameter
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float AccurateSmellCost = 20.0f;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
-	float SanityValueLostPerEnemyPerSecond = 1.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float HungerValueLostPerSecond = 1.0f;
@@ -81,6 +78,18 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float CatMintRecoverySanityValue = 20.0f;
+};
+
+USTRUCT(BlueprintType)
+struct PURRINPERIL_API FInLevelEnemyParameter
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	float SanityValueDamagePerEnemyPerSecond = 1.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	float MaxDamagingDistance = 3000.0f;
 };
 
 USTRUCT(BlueprintType)

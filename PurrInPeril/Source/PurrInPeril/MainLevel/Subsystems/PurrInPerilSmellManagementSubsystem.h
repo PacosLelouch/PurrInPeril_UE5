@@ -41,7 +41,10 @@ public:
 		USceneComponent* OriginSceneComponent, float MaxDistance, 
 		bool bNeedMap = false, bool bWithNoSmell = false, bool bWithOrigin = false);
 
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Smell")
+	const TSet<UPurrInPerilSmellProduceComponent*>& GetAllSmellProducers() const { return SmellProducers; }
+
 protected:
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Smell")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, BlueprintGetter = "GetAllSmellProducers", Category = "PurrInPeril|Smell")
 	TSet<UPurrInPerilSmellProduceComponent*> SmellProducers;
 };

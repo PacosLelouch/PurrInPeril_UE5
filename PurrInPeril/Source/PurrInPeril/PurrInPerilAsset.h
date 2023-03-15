@@ -69,6 +69,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
 	FInLevelTimeParameter DefaultInLevelTimeParameter;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	FInLevelEnemyParameter DefaultInLevelEnemyParameter;
 };
 
 UCLASS(BlueprintType, Blueprintable)

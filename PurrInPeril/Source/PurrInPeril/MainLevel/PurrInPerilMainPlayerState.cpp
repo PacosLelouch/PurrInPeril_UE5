@@ -1,12 +1,18 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PurrInPerilMainPlayerState.h"
+#include "PurrInPerilMainGameState.h"
+#include "PurrInPerilAnimalPawn.h"
+#include "PurrInPerilEnemyPawn.h"
 #include "PurrInPerilAsset.h"
+#include "CustomComponents/PurrInPerilSmellDiscoverComponent.h"
+#include "CustomComponents/PurrInPerilSmellProduceComponent.h"
+#include "Subsystems/PurrInPerilSmellManagementSubsystem.h"
 
 APurrInPerilMainPlayerState::APurrInPerilMainPlayerState(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
-
+    PrimaryActorTick.bCanEverTick = true;
 }
 
 void APurrInPerilMainPlayerState::BeginPlay()
@@ -22,9 +28,45 @@ void APurrInPerilMainPlayerState::BeginPlay()
     CurrentPlayerStateParameter = InitialPlayerStateParameter;
 }
 
+void APurrInPerilMainPlayerState::Tick(float DeltaSeconds)
+{
+    Super::Tick(DeltaSeconds);
+    UWorld* World = GetWorld();
+    if (World)
+    {
+        if (APurrInPerilMainGameState* GameState = World->GetGameState<APurrInPerilMainGameState>())
+        {
+            const FInLevelCostParameter& CostParameter = GameState->GetInLevelCostParameter();
+            AddHungerValue(-CostParameter.HungerValueLostPerSecond * DeltaSeconds);
+
+            if (APurrInPerilAnimalPawn* AnimalPawn = GetPawn<APurrInPerilAnimalPawn>())
+            {
+                if (UPurrInPerilSmellManagementSubsystem* SmellManagementSubsystem = UPurrInPerilSmellManagementSubsystem::GetSubsystem(this))
+                {
+                    const TSet<UPurrInPerilSmellProduceComponent*>& SmellProducers = SmellManagementSubsystem->GetAllSmellProducers();
+                    
+                    float SanityValueDamagePerSecond = 0.0f;
+                    for (const UPurrInPerilSmellProduceComponent* Producer : SmellProducers)
+                    {
+                        if (APurrInPerilEnemyPawn* EnemyPawn = Producer->GetOwner<APurrInPerilEnemyPawn>())
+                        {
+                            float Distance = (Producer->GetComponentLocation() - AnimalPawn->SmellDiscoverComponent->GetComponentLocation()).Length();
+                            if (Distance < EnemyPawn->GetInLevelEnemyParameter().MaxDamagingDistance)
+                            {
+                                SanityValueDamagePerSecond += EnemyPawn->GetInLevelEnemyParameter().SanityValueDamagePerEnemyPerSecond;
+                            }
+                        }
+                    }
+                    AddSanityValue(-SanityValueDamagePerSecond * DeltaSeconds);
+                }
+            }
+        }
+    }
+}
+
 bool APurrInPerilMainPlayerState::AddSanityValue(float AddValue)
 {
-    if (CurrentPlayerStateParameter.SanityValue <= 0 || CurrentPlayerStateParameter.SanityValue >= InitialPlayerStateParameter.SanityValue)
+    if (CurrentPlayerStateParameter.SanityValue <= 0 || CurrentPlayerStateParameter.SanityValue > InitialPlayerStateParameter.SanityValue)
     {
         return false;
     }
@@ -34,7 +76,7 @@ bool APurrInPerilMainPlayerState::AddSanityValue(float AddValue)
 
 bool APurrInPerilMainPlayerState::AddHungerValue(float AddValue)
 {
-    if (CurrentPlayerStateParameter.HungerValue <= 0 || CurrentPlayerStateParameter.HungerValue >= InitialPlayerStateParameter.HungerValue)
+    if (CurrentPlayerStateParameter.HungerValue <= 0 || CurrentPlayerStateParameter.HungerValue > InitialPlayerStateParameter.HungerValue)
     {
         return false;
     }

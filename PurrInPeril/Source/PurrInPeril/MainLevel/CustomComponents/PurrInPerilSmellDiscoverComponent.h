@@ -31,6 +31,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	void ActivateAccurateSmell(float Time);
 
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	void ResetSmellDistanceParameter();
+
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	void AddMaxSmellDistance(float AddValue);
+
+
 	UPROPERTY(BlueprintReadOnly, Category = "PurrInPeril")
 	bool bIsActivatingAccurateSmell = false;
 
@@ -38,6 +45,9 @@ public:
 	bool bOverrideSmellDistanceParameter = false;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "PurrInPeril")
+	FSmellDistanceParameter InitialSmellDistanceParameter;
+
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
 	FSmellDistanceParameter SmellDistanceParameter;
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")

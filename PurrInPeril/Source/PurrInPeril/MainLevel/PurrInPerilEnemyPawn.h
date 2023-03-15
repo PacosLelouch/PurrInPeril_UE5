@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "PurrInPerilPawnBase.h"
+#include "PurrInPerilAsset.h"
 #include "CustomComponents/PurrInPerilSmellProduceComponent.h"
 #include "PurrInPerilEnemyPawn.generated.h"
 
@@ -20,10 +21,25 @@ class PURRINPERIL_API APurrInPerilEnemyPawn : public APurrInPerilPawnBase, publi
 public:
 	APurrInPerilEnemyPawn(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+	virtual void BeginPlay() override;
+
 	//~ Begin ISmellProducerInterface override.
 	virtual UPurrInPerilSmellProduceComponent* GetSmellProduceComponent_Implementation() override;
 	//~ End ISmellProducerInterface override.
 
+	UFUNCTION(BlueprintGetter, Category = "PurrInPeril")
+	bool IsOverrideInLevelEnemyParameter() const { return bOverrideInLevelEnemyParameter; }
+
+	UFUNCTION(BlueprintGetter, Category = "PurrInPeril")
+	const FInLevelEnemyParameter& GetInLevelEnemyParameter() const { return InLevelEnemyParameter; }
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilSmellProduceComponent* SmellProduceComponent = nullptr;
+
+protected:
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, BlueprintGetter = "IsOverrideInLevelEnemyParameter", Category = "PurrInPeril")
+	bool bOverrideInLevelEnemyParameter = false;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, BlueprintGetter = "GetInLevelEnemyParameter", Category = "PurrInPeril")
+	FInLevelEnemyParameter InLevelEnemyParameter;
 };

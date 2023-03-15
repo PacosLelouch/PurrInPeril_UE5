@@ -25,9 +25,10 @@ void UPurrInPerilSmellDiscoverComponent::BeginPlay()
     {
         if (auto* GameplayNumericalSettings = UGameplayNumericalSettings::GetFromGameInstance(this))
         {
-            SmellDistanceParameter = GameplayNumericalSettings->DefaultSmellDistanceParameter;
+            InitialSmellDistanceParameter = GameplayNumericalSettings->DefaultSmellDistanceParameter;
         }
     }
+    ResetSmellDistanceParameter();
 }
 
 void UPurrInPerilSmellDiscoverComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -67,4 +68,14 @@ void UPurrInPerilSmellDiscoverComponent::ActivateAccurateSmell(float Time)
                 Time);
         OnAccurateSmellBegin.Broadcast();
     }
+}
+
+void UPurrInPerilSmellDiscoverComponent::ResetSmellDistanceParameter()
+{
+    SmellDistanceParameter = InitialSmellDistanceParameter;
+}
+
+void UPurrInPerilSmellDiscoverComponent::AddMaxSmellDistance(float AddValue)
+{
+    SmellDistanceParameter.MaxSmellDistance = FMath::Max(SmellDistanceParameter.MaxSmellDistance + AddValue, SmellDistanceParameter.MinSmellDistance);
 }

@@ -180,7 +180,8 @@ bool APurrInPerilMainPlayerController::DeactivateInteractableWidget(UPurrInPeril
     {
         if (InteractingComponent == ComponentToCloseInteraction)
         {
-            UUserWidget** HoldingWidgetPtr = InteractingComponent->PlayerToInteractTipsWidgets.Find(this);
+            InteractingComponent = nullptr;
+            UUserWidget** HoldingWidgetPtr = ComponentToCloseInteraction->PlayerToInteractTipsWidgets.Find(this);
             if (HoldingWidgetPtr)
             {
                 UUserWidget* HoldingWidget = *HoldingWidgetPtr;
