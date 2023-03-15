@@ -13,8 +13,13 @@ void UIndicatorWidget::SetTargetLocation(FVector NewValue)
 {
     TargetLocation = NewValue;
     FVector Location = TargetLocation; // TEST //TargetComponent->GetComponentTransform().GetLocation();
-    FVector2D ScreenPos = CalculateIndicatorScreenPos(Location);
+    FVector2D ScreenPos = CalculateIndicatorScreenPos(Location, bIsActualLocationOutsideScreen);
     //UE_LOG(LogTemp, Log, TEXT("[%s] Test location to screen pos: <%s> -> <%s>"), *GetName(), *Location.ToString(), *ScreenPos.ToString());
+
+    IndicatorIcon->SetRenderScale(
+        bIsActualLocationOutsideScreen ?
+        FVector2D(OutsideScreenScale, OutsideScreenScale) :
+        FVector2D(1.0f, 1.0f));
 
     auto* CanvasSlot = Cast<UCanvasPanelSlot>(Slot);
     if (CanvasSlot)
@@ -48,8 +53,9 @@ void UIndicatorWidget::UpdateCameraTransform()
     CameraTransform.SetRotation(PlayController->PlayerCameraManager->GetCameraRotation().Quaternion());
 }
 
-FVector2D UIndicatorWidget::CalculateIndicatorScreenPos(FVector Destination)
+FVector2D UIndicatorWidget::CalculateIndicatorScreenPos(FVector Destination, bool& bOutIsOutsideScreen)
 {
+    bOutIsOutsideScreen = true;
     FVector2D ScreenPos = FVector2D::ZeroVector;
     APlayerController* PlayController = GetOwningPlayer();
     if (!PlayController)
@@ -92,6 +98,7 @@ FVector2D UIndicatorWidget::CalculateIndicatorScreenPos(FVector Destination)
             ScreenPosY -= DesignSizeY / 2;
             if (((ScreenPosX * ScreenPosX) / (a * a) + (ScreenPosY * ScreenPosY) / (b * b)) < 1)
             {
+                bOutIsOutsideScreen = false;
                 ScreenPos.X = ScreenPosX;
                 ScreenPos.Y = ScreenPosY;
             }
@@ -129,7 +136,7 @@ void UIndicatorWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime
     //IndicatorIcon->SetColorAndOpacity(IndicatorColor);
 
     //FVector Location = TargetLocation; // TEST //TargetComponent->GetComponentTransform().GetLocation();
-    //FVector2D ScreenPos = CalculateIndicatorScreenPos(Location);
+    //FVector2D ScreenPos = CalculateIndicatorScreenPos(Location, bIsActualLocationOutsideScreen);
     ////UE_LOG(LogTemp, Log, TEXT("[%s] Test location to screen pos: <%s> -> <%s>"), *GetName(), *Location.ToString(), *ScreenPos.ToString());
 
     //auto* CanvasSlot = Cast<UCanvasPanelSlot>(Slot);
