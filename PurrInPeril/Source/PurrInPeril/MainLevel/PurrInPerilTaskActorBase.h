@@ -4,6 +4,7 @@
 
 
 #include "CoreMinimal.h"
+#include "PurrInPerilGlobalDefines.h"
 #include "CustomComponents/PurrInPerilInteractableComponent.h"
 #include "CustomComponents/PurrInPerilSmellProduceComponent.h"
 #include "PurrInPerilTaskActorBase.generated.h"
@@ -42,7 +43,7 @@ public:
 
 	virtual void CompleteThisPartOfTask_Implementation(AController* Controller);
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril|Task")
+	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril|Task", meta = (DisplayName = "Complete This Part Of Task Blueprint Implementation"))
 	void BP_CompleteThisPartOfTask(AController* Controller);
 
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
@@ -50,7 +51,7 @@ public:
 
 	virtual void ResetThisPartOfTask_Implementation(AController* Controller);
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril|Task")
+	UFUNCTION(BlueprintImplementableEvent, Category = "PurrInPeril|Task", meta = (DisplayName = "Reset This Part Of Task Blueprint Implementation"))
 	void BP_ResetThisPartOfTask(AController* Controller);
 
 
@@ -64,6 +65,16 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilSmellProduceComponent* SmellProduceComponent = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Task")
+#if TASK_COUNTED_PER_PLAYER
 	TMap<AController*, bool> PlayerToPartOfTaskCompleted;
+#else // !TASK_COUNTED_PER_PLAYER
+	bool bIsTaskCompleted = false;
+#endif // TASK_COUNTED_PER_PLAYER
+
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(VisibleAnywhere, Category = "PurrInPeril|Task")
+	bool bIsTaskCompleted_Debugging = false;
+
+	void Sync_IsTaskCompleted_Debugging(AController* Controller);
+#endif // WITH_EDITORONLY_DATA
 };

@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PurrInPerilGlobalDefines.h"
 #include "PurrInPerilCommon.generated.h"
-
 
 USTRUCT(BlueprintType)
 struct PURRINPERIL_API FPurrInPerilTaskIdentifier
