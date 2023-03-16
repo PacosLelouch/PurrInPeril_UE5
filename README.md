@@ -3,4 +3,4 @@ A 1st horror game that the player is a cat.
 
 
 
-The document for developers can be found in [](./Documents/ForDevelopers.md). 
+The document for developers can be found [here](./Documents/ForDevelopers.md). 

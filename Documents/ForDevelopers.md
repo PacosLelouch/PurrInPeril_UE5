@@ -134,7 +134,7 @@ For a non-widget task actor, you should also define the behavior of interaction.
 
 ### 6. Put the Task Actor into the Level
 
-See "How to Edit the Map".
+See ["How to Edit the Map"](#how-to-edit-the-map).
 
 
 
