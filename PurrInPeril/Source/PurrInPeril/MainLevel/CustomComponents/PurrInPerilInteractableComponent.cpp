@@ -66,7 +66,7 @@ void UPurrInPerilInteractableComponent::OnActorOverlapBegin(AActor* OverlappedAc
 {
     APawn* Pawn = Cast<APawn>(OtherActor);
 
-    if (Pawn)
+    if (Pawn && bInteractable)
     {
         AController* Controller = Pawn->GetController();
         if (Controller)

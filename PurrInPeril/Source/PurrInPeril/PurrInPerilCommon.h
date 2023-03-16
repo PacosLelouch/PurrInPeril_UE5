@@ -94,7 +94,7 @@ public:
 	float SanityValueDamagePerEnemyPerSecond = 1.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
-	float MaxDamagingDistance = 3000.0f;
+	float MaxDamagingDistance = 4000.0f;
 };
 
 USTRUCT(BlueprintType)
@@ -104,6 +104,9 @@ struct PURRINPERIL_API FInLevelTimeParameter
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float InitialGameCountdownInSecond = 180.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	float FinalTaskCountdownInSecond = 40.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float AccurateSmellDurationInSecond = 10.0f;

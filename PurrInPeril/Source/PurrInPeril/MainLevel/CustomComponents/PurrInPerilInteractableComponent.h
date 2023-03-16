@@ -69,6 +69,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Widget")
 	UWidgetComponent* InteractTipsWidgetComponent = nullptr;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	bool bInteractable = true;
+
 	//UFUNCTION()
 	//void OnComponentOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
