@@ -25,17 +25,24 @@ void APurrInPerilCatFoodActor::BeginPlay()
         {
             RecoveryHungerValue = GameplayNumericalSettings->DefaultInLevelCostParameter.CatFoodRecoveryHungerValue;
         }
+        if (!bOverrideInteractColdDown)
+        {
+            MaxInteractColdDownInSecond = GameplayNumericalSettings->DefaultInLevelTimeParameter.CatFoodInteractColdDownInSecond;
+        }
     }
 }
 
 void APurrInPerilCatFoodActor::OpenInteraction_Implementation(AController* Controller)
 {
-	Super::OpenInteraction_Implementation(Controller);
-    APurrInPerilMainPlayerState* PlayerState = Controller->GetPlayerState<APurrInPerilMainPlayerState>();
-    if (PlayerState)
+    if (IsColdDownCompleted())
     {
-        PlayerState->AddHungerValue(RecoveryHungerValue);
+        APurrInPerilMainPlayerState* PlayerState = Controller->GetPlayerState<APurrInPerilMainPlayerState>();
+        if (PlayerState)
+        {
+            PlayerState->AddHungerValue(RecoveryHungerValue);
+        }
     }
+	Super::OpenInteraction_Implementation(Controller);
 }
 
 void APurrInPerilCatFoodActor::CloseInteraction_Implementation(AController* Controller)

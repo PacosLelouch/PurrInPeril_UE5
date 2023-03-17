@@ -32,7 +32,7 @@ void APurrInPerilMainPlayerState::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     UWorld* World = GetWorld();
-    if (World)
+    if (World && !World->IsPaused())
     {
         if (APurrInPerilMainGameState* GameState = World->GetGameState<APurrInPerilMainGameState>())
         {

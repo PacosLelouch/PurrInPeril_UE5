@@ -25,6 +25,8 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaSeconds) override;
+
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	//~ Begin IInteractableActorInterface.
@@ -43,6 +45,14 @@ public:
 	//~ End IInteractableActorInterface.
 	//~ End interaction.
 
+	//~ Begin FoodActorBase.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PurrInPeril")
+	void OnFoodInteractWithPlayer(AController* Controller, bool bSucceeded);
+	//~ End FoodActorBase.
+
+	UFUNCTION(BlueprintPure, Category = "PurrInPeril")
+	bool IsColdDownCompleted() const;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilInteractableComponent* InteractableComponent = nullptr;
 
@@ -55,4 +65,14 @@ public:
 	// Durability means how many times of interaction to destroy itself. Set to -1 for no destroy.
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
 	int32 Durability = -1;
+
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	bool bOverrideInteractColdDown = false;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	float MaxInteractColdDownInSecond = 0.0f;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	float CurrentInteractColdDownInSecond = 0.0f;
 };
