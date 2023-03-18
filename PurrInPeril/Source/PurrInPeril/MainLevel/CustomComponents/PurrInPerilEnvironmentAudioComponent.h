@@ -22,6 +22,9 @@ public:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Audio")
+	FName AudioTag = TEXT("EnvironmentAudio");
+
 protected:
 	UFUNCTION(BlueprintNativeEvent, Category = "PurrInPeril|Audio")
 	void OnPlayAudio(EAudioComponentPlayState PlayState);
