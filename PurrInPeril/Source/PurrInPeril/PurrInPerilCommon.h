@@ -111,9 +111,24 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float AccurateSmellDurationInSecond = 10.0f;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float CatFoodInteractColdDownInSecond = 0.0f;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float CatMintInteractColdDownInSecond = 30.0f;
+};
+
+class USoundAttenuation;
+class USoundClass;
+
+USTRUCT(BlueprintType)
+struct PURRINPERIL_API FInLevelAudioSettings
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Audio")
+	USoundAttenuation* DefaultEnvironmentSoundAttenuation = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Audio")
+	USoundClass* DefaultEnvironmentSoundClass = nullptr;
 };

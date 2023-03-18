@@ -11,7 +11,6 @@ class APurrInPerilTaskActorBase;
 class UPurrInPerilInteractableComponent;
 class UPlayerMainPanelWidgetBase;
 
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPartOfTaskCompleteDynamicDelegate, APurrInPerilTaskActorBase*, TaskActor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPartOfTaskResetDynamicDelegate, APurrInPerilTaskActorBase*, TaskActor);
 

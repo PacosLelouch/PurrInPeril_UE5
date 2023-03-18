@@ -6,9 +6,9 @@
 #include "CoreMinimal.h"
 #include "Engine/World.h"
 #include "Subsystems/WorldSubsystem.h"
-#include "CustomComponents/PurrInPerilSmellProduceComponent.h"
 #include "PurrInPerilSmellManagementSubsystem.generated.h"
 
+class UPurrInPerilSmellProduceComponent;
 
 /**
 * 

@@ -94,6 +94,27 @@ public:
 	TSubclassOf<UUserWidget> DefaultIndicatorPanelWidgetClass;
 };
 
+UCLASS(BlueprintType, Blueprintable)
+class PURRINPERIL_API UGameplayAudioSettings : public UDataAsset
+{
+	GENERATED_BODY()
+public:
+	static const UGameplayAudioSettings* GetFromGameInstance(UObject* WorldContextObject);
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Audio")
+	FInLevelAudioSettings InLevelAudioSettings;
+};
+
+//UCLASS(BlueprintType, Blueprintable)
+//class PURRINPERIL_API UBlueprintStructureAsset : public UDataAsset
+//{
+//	GENERATED_BODY()
+//public:
+//	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
+//	class UUserDefinedStruct* Struct = nullptr;
+//};
+
+
 UCLASS(BlueprintType)
 class PURRINPERIL_API UPurrInPerilAssetLibrary : public UBlueprintFunctionLibrary
 {
@@ -116,4 +137,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "PurrInPeril", meta = (WorldContext = "WorldContextObject"))
 	static const UUserWidgetClassSettings* GetUserWidgetClassSettingsFromGameInstance(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "PurrInPeril|Audio", meta = (WorldContext = "WorldContextObject"))
+	static const UGameplayAudioSettings* GetGameplayAudioSettingsFromGameInstance(UObject* WorldContextObject);
 };

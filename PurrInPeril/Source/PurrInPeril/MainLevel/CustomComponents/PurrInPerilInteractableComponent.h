@@ -39,7 +39,7 @@ public:
 /**
 * 
 */
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(ClassGroup = ("PurrInPeril"), BlueprintType, Blueprintable, meta = (BlueprintSpawnableComponent))
 class PURRINPERIL_API UPurrInPerilInteractableComponent : public UBoxComponent
 {
 	GENERATED_BODY()

@@ -36,8 +36,13 @@ void APurrInPerilMainGameState::Tick(float DeltaSeconds)
     {
         return;
     }
-    if (!World->IsPaused() && CurrentCountdownInSecond > 0.0f)
+    if (!World->IsPaused() && !IsGameOver() && CurrentCountdownInSecond > 0.0f)
     {
         CurrentCountdownInSecond = FMath::Max(0.0f, CurrentCountdownInSecond - DeltaSeconds);
     }
+}
+
+void APurrInPerilMainGameState::SetIsGameOver(const bool bValue)
+{
+    bIsGameOver = bValue;
 }

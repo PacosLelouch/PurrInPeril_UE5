@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PurrInPerilSmellManagementSubsystem.h"
+#include "CustomComponents/PurrInPerilSmellProduceComponent.h"
 #include "PurrInPerilMainGameState.h"
 #include "Engine/World.h"
 #include "Math/Transform.h"

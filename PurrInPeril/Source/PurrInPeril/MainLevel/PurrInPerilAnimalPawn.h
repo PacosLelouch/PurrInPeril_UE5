@@ -9,6 +9,7 @@
 class UBoxComponent;
 class UPurrInPerilMovementComponent;
 class UPurrInPerilSmellDiscoverComponent;
+class UPurrInPerilPlayerHearingComponent;
 
 /**
 * 
@@ -20,6 +21,9 @@ class PURRINPERIL_API APurrInPerilAnimalPawn : public APurrInPerilPawnBase
 public:
 	APurrInPerilAnimalPawn(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Smell")
 	UPurrInPerilSmellDiscoverComponent* SmellDiscoverComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Audio")
+	UPurrInPerilPlayerHearingComponent* PlayerHearingComponent = nullptr;
 };

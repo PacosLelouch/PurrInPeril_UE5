@@ -128,6 +128,32 @@ FPurrInPerilTaskNum UPurrInPerilTaskManagementSubsystem::GetTaskNumAndCompleteCo
     return Point;
 }
 
+int32 UPurrInPerilTaskManagementSubsystem::GetRemainingTaskIdentifierNotCompleted(TSet<FPurrInPerilTaskIdentifier>& OutRemainingTasks, TSet<FPurrInPerilTaskIdentifier> IgnoringTasks, AController* Controller) const
+{
+    OutRemainingTasks.Empty(TaskActors.Num());
+    int32 RemainingCount = TaskActors.Num();
+    for (const auto& Pair : TaskActors)
+    {
+        if (IgnoringTasks.Contains(Pair.Key))
+        {
+            --RemainingCount;
+        }
+        else
+        {
+            FPurrInPerilTaskNum TaskNumStruct = GetTaskNumAndCompleteCount(Pair.Key, Controller);
+            if (TaskNumStruct.TaskCompleteNum == TaskNumStruct.TaskNum)
+            {
+                --RemainingCount;
+            }
+            else
+            {
+                OutRemainingTasks.Add(Pair.Key);
+            }
+        }
+    }
+    return RemainingCount;
+}
+
 void UPurrInPerilTaskManagementSubsystem::InitializeTaskActorsFromWorld()
 {
     UWorld* World = GetWorld();

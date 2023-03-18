@@ -28,7 +28,7 @@ public:
 /**
 * 
 */
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(ClassGroup = ("Smell", "PurrInPeril"), BlueprintType, Blueprintable, meta = (BlueprintSpawnableComponent))
 class PURRINPERIL_API UPurrInPerilSmellProduceComponent : public USceneComponent
 {
 	GENERATED_BODY()

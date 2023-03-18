@@ -10,6 +10,8 @@
 
 class UBoxComponent;
 class UPurrInPerilMovementComponent;
+class UPurrInPerilHearingComponent;
+class UPurrInPerilEnvironmentAudioComponent;
 
 /**
 * 
@@ -33,8 +35,14 @@ public:
 	UFUNCTION(BlueprintGetter, Category = "PurrInPeril")
 	const FInLevelEnemyParameter& GetInLevelEnemyParameter() const { return InLevelEnemyParameter; }
 
-	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Smell")
 	UPurrInPerilSmellProduceComponent* SmellProduceComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Audio")
+	UPurrInPerilHearingComponent* HearingComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Audio")
+	UPurrInPerilEnvironmentAudioComponent* VoiceComponent = nullptr;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, BlueprintGetter = "IsOverrideInLevelEnemyParameter", Category = "PurrInPeril")
