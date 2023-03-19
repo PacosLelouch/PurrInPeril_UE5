@@ -3,4 +3,4 @@
 #include "PurrInPeril.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, PurrInPeril, "PurrInPeril" );
+IMPLEMENT_PRIMARY_GAME_MODULE( FPurrInPerilGameModule, PurrInPeril, "PurrInPeril" );

@@ -3,5 +3,5 @@
 #include "FirstPersonTemplate.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, FirstPersonTemplate, "FirstPersonTemplate" );
+IMPLEMENT_GAME_MODULE( FFirstPersonTemplateGameModule, FirstPersonTemplate );
  

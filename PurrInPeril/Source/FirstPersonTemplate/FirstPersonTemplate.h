@@ -3,3 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+class FFirstPersonTemplateGameModule : public FDefaultGameModuleImpl
+{
+};

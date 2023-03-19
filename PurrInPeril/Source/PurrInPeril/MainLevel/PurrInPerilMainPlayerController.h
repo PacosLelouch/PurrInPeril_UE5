@@ -64,6 +64,13 @@ public:
 	UFUNCTION(BlueprintPure, Category = "PurrInPeril")
 	bool CheckAccurateSmellValid();
 
+	UFUNCTION(Exec, BlueprintCallable, Category = "PurrInPeril")
+	bool AddSanityValue(float AddValue);
+
+	UFUNCTION(Exec, BlueprintCallable, Category = "PurrInPeril")
+	bool AddHungerValue(float AddValue);
+
+
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
 	bool bIsInteractingWithObject = false;
 	

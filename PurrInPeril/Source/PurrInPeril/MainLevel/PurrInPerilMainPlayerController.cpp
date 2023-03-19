@@ -295,3 +295,21 @@ bool APurrInPerilMainPlayerController::CheckAccurateSmellValid()
 
     return true;
 }
+
+bool APurrInPerilMainPlayerController::AddSanityValue(float AddValue)
+{
+    if (APurrInPerilMainPlayerState* LocalPlayerState = GetPlayerState<APurrInPerilMainPlayerState>())
+    {
+        return LocalPlayerState->AddSanityValue(AddValue);
+    }
+    return false;
+}
+
+bool APurrInPerilMainPlayerController::AddHungerValue(float AddValue)
+{
+    if (APurrInPerilMainPlayerState* LocalPlayerState = GetPlayerState<APurrInPerilMainPlayerState>())
+    {
+        return LocalPlayerState->AddHungerValue(AddValue);
+    }
+    return false;
+}
