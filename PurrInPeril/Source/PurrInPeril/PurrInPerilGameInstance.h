@@ -14,6 +14,7 @@ class UTaskIdentifierMapping;
 class UPlayerMainPanelWidgetBase;
 class UGameplayNumericalSettings;
 class UUserWidgetClassSettings;
+class UGameplayAudioSettings;
 
 /**
 * 
@@ -48,5 +49,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Asset")
 	const UUserWidgetClassSettings* UserWidgetClassSettings;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Asset")
+	const UGameplayAudioSettings* AudioSettings;
 
 };

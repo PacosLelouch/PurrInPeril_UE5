@@ -80,6 +80,10 @@ void APurrInPerilTaskActorBase::CompleteThisPartOfTask_Implementation(AControlle
     SmellProduceComponent->bWithSmell = false;
     if (APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller))
     {
+        if (UPurrInPerilTaskManagementSubsystem* TaskManagementSubsystem = UPurrInPerilTaskManagementSubsystem::GetSubsystem(this))
+        {
+            TaskManagementSubsystem->OnPartOfTaskComplete.Broadcast(this, PlayerController);
+        }
         PlayerController->OnPartOfTaskComplete.Broadcast(this);
     }
 }
@@ -112,6 +116,10 @@ void APurrInPerilTaskActorBase::ResetThisPartOfTask_Implementation(AController* 
     SmellProduceComponent->bWithSmell = true;
     if (APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller))
     {
+        if (UPurrInPerilTaskManagementSubsystem* TaskManagementSubsystem = UPurrInPerilTaskManagementSubsystem::GetSubsystem(this))
+        {
+            TaskManagementSubsystem->OnPartOfTaskReset.Broadcast(this, PlayerController);
+        }
         PlayerController->OnPartOfTaskReset.Broadcast(this);
     }
 }

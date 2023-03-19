@@ -15,7 +15,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAccurateSmellEndDynamicDelegate);
 /**
 * 
 */
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(ClassGroup = ("Smell", "PurrInPeril"), BlueprintType, Blueprintable, meta = (BlueprintSpawnableComponent))
 class PURRINPERIL_API UPurrInPerilSmellDiscoverComponent : public USceneComponent
 {
 	GENERATED_BODY()

@@ -79,6 +79,18 @@ const UUserWidgetClassSettings* UUserWidgetClassSettings::GetFromGameInstance(UO
 	return nullptr;
 }
 
+const UGameplayAudioSettings* UGameplayAudioSettings::GetFromGameInstance(UObject* WorldContextObject)
+{
+	if (UWorld* World = WorldContextObject->GetWorld())
+	{
+		if (UPurrInPerilGameInstance* GameInstance = World->GetGameInstance<UPurrInPerilGameInstance>())
+		{
+			return GameInstance->AudioSettings;
+		}
+	}
+	return nullptr;
+}
+
 bool UPurrInPerilAssetLibrary::EqualEqual_PurrInPerilTaskIdentifierPurrInPerilTaskIdentifier(FPurrInPerilTaskIdentifier A, FPurrInPerilTaskIdentifier B)
 {
 	return A == B;
@@ -107,4 +119,9 @@ const UGameplayNumericalSettings* UPurrInPerilAssetLibrary::GetGameplayNumerical
 const UUserWidgetClassSettings* UPurrInPerilAssetLibrary::GetUserWidgetClassSettingsFromGameInstance(UObject* WorldContextObject)
 {
 	return UUserWidgetClassSettings::GetFromGameInstance(WorldContextObject);
+}
+
+const UGameplayAudioSettings* UPurrInPerilAssetLibrary::GetGameplayAudioSettingsFromGameInstance(UObject* WorldContextObject)
+{
+	return UGameplayAudioSettings::GetFromGameInstance(WorldContextObject);
 }

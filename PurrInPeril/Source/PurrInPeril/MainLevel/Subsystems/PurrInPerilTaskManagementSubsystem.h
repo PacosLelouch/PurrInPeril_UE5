@@ -6,10 +6,15 @@
 #include "CoreMinimal.h"
 #include "Engine/World.h"
 #include "Subsystems/WorldSubsystem.h"
-#include "PurrInPerilTaskActorBase.h"
 #include "PurrInPerilAsset.h"
 #include "Math/IntPoint.h"
 #include "PurrInPerilTaskManagementSubsystem.generated.h"
+
+class AController;
+class APurrInPerilTaskActorBase;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPartOfTaskCompleteByPlayerDynamicDelegate, APurrInPerilTaskActorBase*, TaskActor, AController*, Controller);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPartOfTaskResetByPlayerDynamicDelegate, APurrInPerilTaskActorBase*, TaskActor, AController*, Controller);
 
 USTRUCT(BlueprintType)
 struct PURRINPERIL_API FPurrInPerilTaskActorSet
@@ -62,8 +67,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
 	FPurrInPerilTaskNum GetTaskNumAndCompleteCount(const FPurrInPerilTaskIdentifier& TaskIdentifier, AController* Controller) const;
 
-	//UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
-	//	;
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
+	int32 GetRemainingTaskIdentifierNotCompleted(TSet<FPurrInPerilTaskIdentifier>& OutRemainingTasks, TSet<FPurrInPerilTaskIdentifier> IgnoringTasks, AController* Controller) const;
+
+
+	UPROPERTY(BlueprintAssignable, Category = "PurrInPeril|Task")
+	FOnPartOfTaskCompleteByPlayerDynamicDelegate OnPartOfTaskComplete;
+
+	UPROPERTY(BlueprintAssignable, Category = "PurrInPeril|Task")
+	FOnPartOfTaskResetByPlayerDynamicDelegate OnPartOfTaskReset;
 
 protected:
 	// Is it useful?

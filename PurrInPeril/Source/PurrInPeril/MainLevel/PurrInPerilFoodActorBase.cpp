@@ -12,6 +12,8 @@
 APurrInPerilFoodActorBase::APurrInPerilFoodActorBase(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
+    PrimaryActorTick.bCanEverTick = true;
+
     RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
     InteractableComponent = CreateDefaultSubobject<UPurrInPerilInteractableComponent>(TEXT("InteractableComponent"));
     InteractableComponent->SetupAttachment(RootComponent);
@@ -23,6 +25,21 @@ APurrInPerilFoodActorBase::APurrInPerilFoodActorBase(const FObjectInitializer& O
 void APurrInPerilFoodActorBase::BeginPlay()
 {
     Super::BeginPlay();
+}
+
+void APurrInPerilFoodActorBase::Tick(float DeltaSeconds)
+{
+    Super::Tick(DeltaSeconds);
+
+    UWorld* World = GetWorld();
+    if (!World)
+    {
+        return;
+    }
+    if (!World->IsPaused() && CurrentInteractColdDownInSecond > 0.0f)
+    {
+        CurrentInteractColdDownInSecond = FMath::Max(0.0f, CurrentInteractColdDownInSecond - DeltaSeconds);
+    }
 }
 
 void APurrInPerilFoodActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -42,16 +59,35 @@ UPurrInPerilSmellProduceComponent* APurrInPerilFoodActorBase::GetSmellProduceCom
 
 void APurrInPerilFoodActorBase::OpenInteraction_Implementation(AController* Controller)
 {
-    if (Durability > 0)
+    if (IsColdDownCompleted())
     {
-        --Durability;
+        CurrentInteractColdDownInSecond += MaxInteractColdDownInSecond;
+        if (Durability > 0)
+        {
+            --Durability;
+        }
+        OnFoodInteractWithPlayer(Controller, true);
+        if (Durability == 0)
+        {
+            Destroy();
+        }
     }
-    if (Durability == 0)
+    else
     {
-        Destroy();
+        OnFoodInteractWithPlayer(Controller, false);
     }
 }
 
 void APurrInPerilFoodActorBase::CloseInteraction_Implementation(AController* Controller)
 {
+}
+
+void APurrInPerilFoodActorBase::OnFoodInteractWithPlayer_Implementation(AController* Controller, bool bSucceeded)
+{
+
+}
+
+bool APurrInPerilFoodActorBase::IsColdDownCompleted() const
+{
+    return CurrentInteractColdDownInSecond <= 0.0f && Durability != 0;
 }

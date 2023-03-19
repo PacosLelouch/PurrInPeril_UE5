@@ -4,6 +4,7 @@
 #include "Components/BoxComponent.h"
 #include "CustomComponents/PurrInPerilMovementComponent.h"
 #include "CustomComponents/PurrInPerilSmellDiscoverComponent.h"
+#include "CustomComponents/PurrInPerilHearingComponent.h"
 
 APurrInPerilAnimalPawn::APurrInPerilAnimalPawn(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
@@ -14,4 +15,7 @@ APurrInPerilAnimalPawn::APurrInPerilAnimalPawn(const FObjectInitializer& ObjectI
 
     SmellDiscoverComponent = CreateDefaultSubobject<UPurrInPerilSmellDiscoverComponent>(TEXT("SmellDiscoverComponent"));
     SmellDiscoverComponent->SetupAttachment(RootComponent);
+
+    PlayerHearingComponent = CreateDefaultSubobject<UPurrInPerilPlayerHearingComponent>(TEXT("PlayerHearingComponent"));
+    PlayerHearingComponent->SetupAttachment(RootComponent);
 }

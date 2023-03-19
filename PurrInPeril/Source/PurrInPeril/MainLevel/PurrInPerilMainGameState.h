@@ -30,7 +30,16 @@ public:
 	UFUNCTION(BlueprintGetter, Category = "PurrInPeril")
 	float GetCurrentCountdownInSecond() const { return CurrentCountdownInSecond; }
 
+	UFUNCTION(BlueprintSetter, Category = "PurrInPeril")
+	void SetIsGameOver(const bool bValue);
+
+	UFUNCTION(BlueprintGetter, Category = "PurrInPeril")
+	bool IsGameOver() const { return bIsGameOver; }
+
 protected:
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, BlueprintGetter = "IsGameOver", BlueprintSetter = "SetIsGameOver", Category = "PurrInPeril")
+	bool bIsGameOver = false;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
 	bool bOverrideInLevelCostParameter = false;
 

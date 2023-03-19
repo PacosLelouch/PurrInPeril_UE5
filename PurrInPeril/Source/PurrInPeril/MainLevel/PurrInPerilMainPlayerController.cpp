@@ -24,6 +24,7 @@ APurrInPerilMainPlayerController::APurrInPerilMainPlayerController(const FObject
 void APurrInPerilMainPlayerController::BeginPlay()
 {
     Super::BeginPlay();
+    //SetInputMode(FInputModeGameAndUI().SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways));//TEST
 
     if (const UUserWidgetClassSettings* UserWidgetClassSettings = UUserWidgetClassSettings::GetFromGameInstance(this))
     {

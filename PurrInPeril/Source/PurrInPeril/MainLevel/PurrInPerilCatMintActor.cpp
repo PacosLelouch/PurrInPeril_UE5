@@ -25,17 +25,24 @@ void APurrInPerilCatMintActor::BeginPlay()
         {
             RecoverySanityValue = GameplayNumericalSettings->DefaultInLevelCostParameter.CatMintRecoverySanityValue;
         }
+        if (!bOverrideInteractColdDown)
+        {
+            MaxInteractColdDownInSecond = GameplayNumericalSettings->DefaultInLevelTimeParameter.CatMintInteractColdDownInSecond;
+        }
     }
 }
 
 void APurrInPerilCatMintActor::OpenInteraction_Implementation(AController* Controller)
 {
-    Super::OpenInteraction_Implementation(Controller);
-    APurrInPerilMainPlayerState* PlayerState = Controller->GetPlayerState<APurrInPerilMainPlayerState>();
-    if (PlayerState)
+    if (IsColdDownCompleted())
     {
-        PlayerState->AddSanityValue(RecoverySanityValue);
+        APurrInPerilMainPlayerState* PlayerState = Controller->GetPlayerState<APurrInPerilMainPlayerState>();
+        if (PlayerState)
+        {
+            PlayerState->AddSanityValue(RecoverySanityValue);
+        }
     }
+    Super::OpenInteraction_Implementation(Controller);
 }
 
 void APurrInPerilCatMintActor::CloseInteraction_Implementation(AController* Controller)

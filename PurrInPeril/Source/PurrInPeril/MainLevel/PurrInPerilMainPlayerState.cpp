@@ -32,32 +32,35 @@ void APurrInPerilMainPlayerState::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     UWorld* World = GetWorld();
-    if (World)
+    if (World && !World->IsPaused())
     {
         if (APurrInPerilMainGameState* GameState = World->GetGameState<APurrInPerilMainGameState>())
         {
-            const FInLevelCostParameter& CostParameter = GameState->GetInLevelCostParameter();
-            AddHungerValue(-CostParameter.HungerValueLostPerSecond * DeltaSeconds);
-
-            if (APurrInPerilAnimalPawn* AnimalPawn = GetPawn<APurrInPerilAnimalPawn>())
+            if (!GameState->IsGameOver())
             {
-                if (UPurrInPerilSmellManagementSubsystem* SmellManagementSubsystem = UPurrInPerilSmellManagementSubsystem::GetSubsystem(this))
+                const FInLevelCostParameter& CostParameter = GameState->GetInLevelCostParameter();
+                AddHungerValue(-CostParameter.HungerValueLostPerSecond * DeltaSeconds);
+
+                if (APurrInPerilAnimalPawn* AnimalPawn = GetPawn<APurrInPerilAnimalPawn>())
                 {
-                    const TSet<UPurrInPerilSmellProduceComponent*>& SmellProducers = SmellManagementSubsystem->GetAllSmellProducers();
-                    
-                    float SanityValueDamagePerSecond = 0.0f;
-                    for (const UPurrInPerilSmellProduceComponent* Producer : SmellProducers)
+                    if (UPurrInPerilSmellManagementSubsystem* SmellManagementSubsystem = UPurrInPerilSmellManagementSubsystem::GetSubsystem(this))
                     {
-                        if (APurrInPerilEnemyPawn* EnemyPawn = Producer->GetOwner<APurrInPerilEnemyPawn>())
+                        const TSet<UPurrInPerilSmellProduceComponent*>& SmellProducers = SmellManagementSubsystem->GetAllSmellProducers();
+
+                        float SanityValueDamagePerSecond = 0.0f;
+                        for (const UPurrInPerilSmellProduceComponent* Producer : SmellProducers)
                         {
-                            float Distance = (Producer->GetComponentLocation() - AnimalPawn->SmellDiscoverComponent->GetComponentLocation()).Length();
-                            if (Distance < EnemyPawn->GetInLevelEnemyParameter().MaxDamagingDistance)
+                            if (APurrInPerilEnemyPawn* EnemyPawn = Producer->GetOwner<APurrInPerilEnemyPawn>())
                             {
-                                SanityValueDamagePerSecond += EnemyPawn->GetInLevelEnemyParameter().SanityValueDamagePerEnemyPerSecond;
+                                float Distance = (Producer->GetComponentLocation() - AnimalPawn->SmellDiscoverComponent->GetComponentLocation()).Length();
+                                if (Distance < EnemyPawn->GetInLevelEnemyParameter().MaxDamagingDistance)
+                                {
+                                    SanityValueDamagePerSecond += EnemyPawn->GetInLevelEnemyParameter().SanityValueDamagePerEnemyPerSecond;
+                                }
                             }
                         }
+                        AddSanityValue(-SanityValueDamagePerSecond * DeltaSeconds);
                     }
-                    AddSanityValue(-SanityValueDamagePerSecond * DeltaSeconds);
                 }
             }
         }
