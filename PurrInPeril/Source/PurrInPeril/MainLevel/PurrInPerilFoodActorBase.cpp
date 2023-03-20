@@ -40,6 +40,7 @@ void APurrInPerilFoodActorBase::Tick(float DeltaSeconds)
     {
         CurrentInteractColdDownInSecond = FMath::Max(0.0f, CurrentInteractColdDownInSecond - DeltaSeconds);
     }
+    SmellProduceComponent->bWithSmell = IsColdDownCompleted();
 }
 
 void APurrInPerilFoodActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
