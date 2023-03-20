@@ -66,6 +66,10 @@ void UPurrInPerilTaskManagementSubsystem::RegisterTaskActor(APurrInPerilTaskActo
 
     FPurrInPerilTaskActorSet& TaskActorSet = TaskActors.FindOrAdd(TaskIdentifier);
     TaskActorSet.Set.Add(TaskActor);
+    TaskActors.KeySort([](const FPurrInPerilTaskIdentifier& K1, const FPurrInPerilTaskIdentifier& K2)
+        {
+            return K1.ID < K2.ID;
+        });
 }
 
 void UPurrInPerilTaskManagementSubsystem::UnregisterTaskActor(APurrInPerilTaskActorBase* TaskActor)
