@@ -41,7 +41,7 @@ public:
 
 	// Hide interactable tips out of trigger box.
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
-	bool DeactivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToCloseInteraction);
+	bool DeactivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToCloseInteraction, bool bClearInteractingComponent = true);
 
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	void OpenWidgetLockMovement(UUserWidget* UserWidget);

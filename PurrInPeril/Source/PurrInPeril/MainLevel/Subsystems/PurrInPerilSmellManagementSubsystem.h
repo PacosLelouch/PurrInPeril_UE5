@@ -38,7 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Smell")
 	UPurrInPerilSmellProduceComponent* GetSmellProducersInDistance(
 		TMap<UPurrInPerilSmellProduceComponent*, float>& OutSmellProducers, 
-		USceneComponent* OriginSceneComponent, float MaxDistance, 
+		USceneComponent* OriginSceneComponent, float MaxDistanceReturn, float MaxDistanceMap, 
 		bool bNeedMap = false, bool bWithNoSmell = false, bool bWithOrigin = false);
 
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Smell")

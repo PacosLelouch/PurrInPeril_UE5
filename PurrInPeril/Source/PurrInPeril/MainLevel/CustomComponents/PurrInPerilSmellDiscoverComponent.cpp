@@ -45,7 +45,21 @@ void UPurrInPerilSmellDiscoverComponent::TickComponent(float DeltaTime, ELevelTi
     {
         // 1. Find the closest smell producer.
         // 2. If bIsActivatingAccurateSmell, find smell producers in specific range.
-        PerceivedNearestSmellProducer = SmellManagementSubsystem->GetSmellProducersInDistance(PerceivedSmellProducers, this, SmellDistanceParameter.MaxSmellDistance, bIsActivatingAccurateSmell, false, false);
+
+        float SmellDistanceReturn = SmellDistanceParameter.MaxSmellDistance;
+        float SmellDistanceMap = SmellDistanceParameter.MaxSmellDistance;
+        bool bNeedPerceivedSmellProducers = bIsActivatingAccurateSmell;
+
+        if (!bIsActivatingAccurateSmell && SmellDistanceParameter.bInaccurateSmellWithTarget)
+        {
+            SmellDistanceMap = SmellDistanceParameter.MinSmellDistance;
+            bNeedPerceivedSmellProducers = true;
+        }
+
+        PerceivedNearestSmellProducer = SmellManagementSubsystem->GetSmellProducersInDistance(
+            PerceivedSmellProducers, this, 
+            SmellDistanceReturn, SmellDistanceMap, 
+            bNeedPerceivedSmellProducers, false, false);
     }
 }
 

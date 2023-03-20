@@ -65,7 +65,7 @@ void UPurrInPerilSmellManagementSubsystem::UnregisterSmellProducer(UPurrInPerilS
 
 UPurrInPerilSmellProduceComponent* UPurrInPerilSmellManagementSubsystem::GetSmellProducersInDistance(
     TMap<UPurrInPerilSmellProduceComponent*, float>& OutSmellProducers, 
-    USceneComponent* OriginSceneComponent, float MaxDistance, 
+    USceneComponent* OriginSceneComponent, float MaxDistanceReturn, float MaxDistanceMap, 
     bool bNeedMap, bool bWithNoSmell, bool bWithOrigin)
 {
     OutSmellProducers.Empty(SmellProducers.Num());
@@ -90,12 +90,13 @@ UPurrInPerilSmellProduceComponent* UPurrInPerilSmellManagementSubsystem::GetSmel
         }
         FTransform SmellProducerTransform = SmellProducer->GetComponentTransform();
         float Distance = (OriginTransform.GetLocation() - SmellProducerTransform.GetLocation()).Size();
-        if (Distance < MaxDistance)
+
+        if (bNeedMap && Distance < MaxDistanceMap)
         {
-            if (bNeedMap)
-            {
-                OutSmellProducers.Add(SmellProducer, Distance);
-            }
+            OutSmellProducers.Add(SmellProducer, Distance);
+        }
+        if (Distance < MaxDistanceReturn)
+        {
             if (!ClosestComponent || Distance < MinDistance)
             {
                 ClosestComponent = SmellProducer;

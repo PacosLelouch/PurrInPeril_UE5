@@ -170,7 +170,7 @@ bool APurrInPerilMainPlayerController::ActivateInteractableWidget(UPurrInPerilIn
     return true;
 }
 
-bool APurrInPerilMainPlayerController::DeactivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToCloseInteraction)
+bool APurrInPerilMainPlayerController::DeactivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToCloseInteraction, bool bClearInteractingComponent)
 {
     if (!ComponentToCloseInteraction)
     {
@@ -181,7 +181,10 @@ bool APurrInPerilMainPlayerController::DeactivateInteractableWidget(UPurrInPeril
     {
         if (InteractingComponent == ComponentToCloseInteraction)
         {
-            InteractingComponent = nullptr;
+            if (bClearInteractingComponent)
+            {
+                InteractingComponent = nullptr;
+            }
             UUserWidget** HoldingWidgetPtr = ComponentToCloseInteraction->PlayerToInteractTipsWidgets.Find(this);
             if (HoldingWidgetPtr)
             {
@@ -206,7 +209,7 @@ void APurrInPerilMainPlayerController::OpenWidgetLockMovement(UUserWidget* UserW
         SetIgnoreMoveInput(true);
         SetIgnoreLookInput(true);
         SetShowMouseCursor(true);
-        DeactivateInteractableWidget(InteractingComponent);
+        DeactivateInteractableWidget(InteractingComponent, false);
         bIsInteractingWithObject = true;
     }
 }

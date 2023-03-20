@@ -59,6 +59,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
 	float MinSmellDistance = 200.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril")
+	bool bInaccurateSmellWithTarget = false;
 };
 
 USTRUCT(BlueprintType)
