@@ -13,6 +13,7 @@
 #include "Subsystems/PurrInPerilTaskManagementSubsystem.h"
 #include "Widgets/PlayerMainPanelWidgetBase.h"
 #include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/World.h"
 
 APurrInPerilMainPlayerController::APurrInPerilMainPlayerController(const FObjectInitializer& ObjectInitializer)
@@ -225,6 +226,10 @@ void APurrInPerilMainPlayerController::CloseWidgetUnlockMovement(UUserWidget* Us
     SetIgnoreMoveInput(bLastIgnoreMoveInput);
     SetIgnoreLookInput(bLastIgnoreMoveInput);
     SetShowMouseCursor(bLastIgnoreMoveInput);
+    if (!bLastIgnoreMoveInput)
+    {
+        UWidgetBlueprintLibrary::SetInputMode_GameOnly(this, true);
+    }
     bLastIgnoreMoveInput = IsMoveInputIgnored();
     ActivateInteractableWidget(InteractingComponent);
     bIsInteractingWithObject = false;

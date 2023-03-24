@@ -24,6 +24,9 @@ public:
 	void SetTargetLocation(FVector NewValue);
 
 	UFUNCTION(BlueprintSetter)
+	void SetTargetActor(AActor* NewActor);
+
+	UFUNCTION(BlueprintSetter)
 	void SetIndicatorColor(FLinearColor NewValue);
 
 protected:
@@ -40,6 +43,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget", Meta = (ClampMin = 0, ClampMax = 1))
 	float OutsideScreenScale = 0.3f;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, BlueprintSetter = "SetTargetActor", Category = "PurrInPeril|Widget")
+	AActor* TargetActor = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, BlueprintSetter = "SetTargetLocation", Category = "PurrInPeril|Widget")
 	FVector TargetLocation = FVector::UpVector * 200.0f;

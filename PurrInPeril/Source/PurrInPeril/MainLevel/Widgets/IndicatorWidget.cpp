@@ -36,10 +36,20 @@ void UIndicatorWidget::SetTargetLocation(FVector NewValue)
     }
 }
 
+void UIndicatorWidget::SetTargetActor(AActor* NewActor)
+{
+    TargetActor = NewActor;
+    if (TargetActor)
+    {
+        SetTargetLocation(TargetActor->GetActorLocation());
+    }
+}
+
 void UIndicatorWidget::SetIndicatorColor(FLinearColor NewValue)
 {
     IndicatorColor = NewValue;
-    IndicatorIcon->SetColorAndOpacity(IndicatorColor);
+    // We can bind the property directly.
+    //IndicatorIcon->SetColorAndOpacity(IndicatorColor);
 }
 
 void UIndicatorWidget::UpdateCameraTransform()
