@@ -7,6 +7,7 @@
 #include "PurrInPerilGameInstance.h"
 #include "PurrInPerilAsset.h"
 #include "PurrInPerilMainPlayerController.h"
+#include "PurrInPerilMainPlayerState.h"
 #include "Subsystems/PurrInPerilTaskManagementSubsystem.h"
 
 
@@ -29,6 +30,21 @@ void APurrInPerilTaskActorBase::BeginPlay()
     if (TaskManagementSubsystem)
     {
         TaskManagementSubsystem->RegisterTaskActor(this);
+    }
+    
+    if (const UGameplayNumericalSettings* GameplayNumericalSettings = UGameplayNumericalSettings::GetFromGameInstance(this))
+    {
+        if (!bOverrideTaskParameter)
+        {
+            if (const UTaskParameterOverrideMapping* TaskParameterOverrideMapping = UTaskParameterOverrideMapping::GetFromGameInstance(this))
+            {
+                TaskParameter = TaskParameterOverrideMapping->GetTaskParameter(GetClass());
+            }
+            else
+            {
+                TaskParameter = GameplayNumericalSettings->DefaultInLevelTaskParameter;
+            }
+        }
     }
 }
 
@@ -78,6 +94,19 @@ void APurrInPerilTaskActorBase::CompleteThisPartOfTask_Implementation(AControlle
     bIsTaskCompleted = true;
 #endif // TASK_COUNTED_PER_PLAYER
     SmellProduceComponent->bWithSmell = false;
+
+    if (APurrInPerilMainPlayerState* LocalPlayerState = Controller->GetPlayerState<APurrInPerilMainPlayerState>())
+    {
+        if (TaskParameter.RecoverySanityValue != 0.0f)
+        {
+            LocalPlayerState->AddSanityValue(TaskParameter.RecoverySanityValue);
+        }
+        if (TaskParameter.RecoveryHungerValue != 0.0f)
+        {
+            LocalPlayerState->AddHungerValue(TaskParameter.RecoveryHungerValue);
+        }
+    }
+
     if (APurrInPerilMainPlayerController* PlayerController = Cast<APurrInPerilMainPlayerController>(Controller))
     {
         if (UPurrInPerilTaskManagementSubsystem* TaskManagementSubsystem = UPurrInPerilTaskManagementSubsystem::GetSubsystem(this))

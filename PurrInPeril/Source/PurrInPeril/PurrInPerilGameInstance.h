@@ -11,6 +11,7 @@ class UUserWidget;
 class AActor;
 class UIndicateColorMapping;
 class UTaskIdentifierMapping;
+class UTaskParameterOverrideMapping;
 class UPlayerMainPanelWidgetBase;
 class UGameplayNumericalSettings;
 class UUserWidgetClassSettings;
@@ -43,6 +44,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Asset")
 	const UTaskIdentifierMapping* TaskIdentifierMapping;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Asset")
+	const UTaskParameterOverrideMapping* TaskParameterOverrideMapping;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Asset")
 	const UGameplayNumericalSettings* GameplayNumericalSettings;

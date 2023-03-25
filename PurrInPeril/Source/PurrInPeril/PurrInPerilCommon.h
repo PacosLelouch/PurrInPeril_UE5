@@ -38,6 +38,18 @@ FORCEINLINE uint32 GetTypeHash(const FPurrInPerilTaskIdentifier& Struct)
 }
 
 USTRUCT(BlueprintType)
+struct PURRINPERIL_API FInLevelTaskParameter
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Task")
+	float RecoverySanityValue = 0.0f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Task")
+	float RecoveryHungerValue = 0.0f;
+};
+
+USTRUCT(BlueprintType)
 struct PURRINPERIL_API FPlayerStateParameter
 {
 	GENERATED_BODY()

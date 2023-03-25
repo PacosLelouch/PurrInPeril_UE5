@@ -55,6 +55,31 @@ FPurrInPerilTaskIdentifier UTaskIdentifierMapping::GetIdentifier(TSubclassOf<APu
 	return DefaultTaskIdentifier;
 }
 
+const UTaskParameterOverrideMapping* UTaskParameterOverrideMapping::GetFromGameInstance(UObject* WorldContextObject)
+{
+	if (UWorld* World = WorldContextObject->GetWorld())
+	{
+		if (UPurrInPerilGameInstance* GameInstance = World->GetGameInstance<UPurrInPerilGameInstance>())
+		{
+			return GameInstance->TaskParameterOverrideMapping;
+		}
+	}
+	return nullptr;
+}
+
+FInLevelTaskParameter UTaskParameterOverrideMapping::GetTaskParameter(TSubclassOf<APurrInPerilTaskActorBase> InClass) const
+{
+	for (TSubclassOf<APurrInPerilTaskActorBase> TempClass = InClass; TempClass != APurrInPerilTaskActorBase::StaticClass(); TempClass = TempClass->GetSuperClass())
+	{
+		const FInLevelTaskParameter* TaskParameterPtr = Mapping.Find(TempClass);
+		if (TaskParameterPtr)
+		{
+			return *TaskParameterPtr;
+		}
+	}
+	return DefaultInLevelTaskParameter;
+}
+
 const UGameplayNumericalSettings* UGameplayNumericalSettings::GetFromGameInstance(UObject* WorldContextObject)
 {
 	if (UWorld* World = WorldContextObject->GetWorld())
@@ -111,6 +136,11 @@ const UTaskIdentifierMapping* UPurrInPerilAssetLibrary::GetTaskIdentifierMapping
 	return UTaskIdentifierMapping::GetFromGameInstance(WorldContextObject);
 }
 
+const UTaskParameterOverrideMapping* UPurrInPerilAssetLibrary::GetTaskParameterOverrideMappingFromGameInstance(UObject* WorldContextObject)
+{
+	return UTaskParameterOverrideMapping::GetFromGameInstance(WorldContextObject);
+}
+
 const UGameplayNumericalSettings* UPurrInPerilAssetLibrary::GetGameplayNumericalSettingsFromGameInstance(UObject* WorldContextObject)
 {
 	return UGameplayNumericalSettings::GetFromGameInstance(WorldContextObject);
@@ -125,3 +155,4 @@ const UGameplayAudioSettings* UPurrInPerilAssetLibrary::GetGameplayAudioSettings
 {
 	return UGameplayAudioSettings::GetFromGameInstance(WorldContextObject);
 }
+

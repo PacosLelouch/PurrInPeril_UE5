@@ -52,6 +52,24 @@ protected:
 };
 
 UCLASS(BlueprintType, Blueprintable)
+class PURRINPERIL_API UTaskParameterOverrideMapping : public UDataAsset
+{
+	GENERATED_BODY()
+public:
+	static const UTaskParameterOverrideMapping* GetFromGameInstance(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
+	FInLevelTaskParameter GetTaskParameter(TSubclassOf<APurrInPerilTaskActorBase> InClass) const;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
+	FInLevelTaskParameter DefaultInLevelTaskParameter;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Task")
+	TMap<TSubclassOf<APurrInPerilTaskActorBase>, FInLevelTaskParameter> Mapping;
+};
+
+UCLASS(BlueprintType, Blueprintable)
 class PURRINPERIL_API UGameplayNumericalSettings : public UDataAsset
 {
 	GENERATED_BODY()
@@ -72,6 +90,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril")
 	FInLevelEnemyParameter DefaultInLevelEnemyParameter;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
+	FInLevelTaskParameter DefaultInLevelTaskParameter;
 };
 
 UCLASS(BlueprintType, Blueprintable)
@@ -131,6 +152,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "PurrInPeril", meta = (WorldContext = "WorldContextObject"))
 	static const UTaskIdentifierMapping* GetTaskIdentifierMappingFromGameInstance(UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "PurrInPeril", meta = (WorldContext = "WorldContextObject"))
+	static const UTaskParameterOverrideMapping* GetTaskParameterOverrideMappingFromGameInstance(UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure, Category = "PurrInPeril", meta = (WorldContext = "WorldContextObject"))
 	static const UGameplayNumericalSettings* GetGameplayNumericalSettingsFromGameInstance(UObject* WorldContextObject);

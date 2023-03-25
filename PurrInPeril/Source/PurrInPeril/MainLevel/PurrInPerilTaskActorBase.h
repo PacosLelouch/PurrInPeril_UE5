@@ -4,7 +4,7 @@
 
 
 #include "CoreMinimal.h"
-#include "PurrInPerilGlobalDefines.h"
+#include "PurrInPerilCommon.h"
 #include "CustomComponents/PurrInPerilInteractableComponent.h"
 #include "CustomComponents/PurrInPerilSmellProduceComponent.h"
 #include "PurrInPerilTaskActorBase.generated.h"
@@ -64,6 +64,12 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilSmellProduceComponent* SmellProduceComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
+	bool bOverrideTaskParameter = false;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
+	FInLevelTaskParameter TaskParameter;
 
 #if TASK_COUNTED_PER_PLAYER
 	TMap<AController*, bool> PlayerToPartOfTaskCompleted;
