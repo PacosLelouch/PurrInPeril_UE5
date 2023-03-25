@@ -43,25 +43,34 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	bool DeactivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToCloseInteraction, bool bClearInteractingComponent = true);
 
+	// Callback PostActivateInteractableWidget.
+	UFUNCTION(BlueprintNativeEvent, Category = "PurrInPeril")
+	void PostActivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToOpenInteraction);
+
+	// Callback PostDeactivateInteractableWidget.
+	UFUNCTION(BlueprintNativeEvent, Category = "PurrInPeril")
+	void PostDeactivateInteractableWidget(UPurrInPerilInteractableComponent* ComponentToOpenInteraction, bool bClearInteractingComponent);
+
+
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	void OpenWidgetLockMovement(UUserWidget* UserWidget);
 
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	void CloseWidgetUnlockMovement(UUserWidget* UserWidget);
 
-	// Show accurate indicators (OnAccurateSmellBegin).
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
-	void ShowAccurateIndicatorWidget();
+	// Callback OnAccurateSmellBegin.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PurrInPeril")
+	void OnAccurateSmellBegin();
 
-	// Hide accurate indicators (OnAccurateSmellEnd).
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
-	void HideAccurateIndicatorWidget();
+	// Callback OnAccurateSmellEnd.
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PurrInPeril")
+	void OnAccurateSmellEnd();
 
-	// Should map to "E" button.
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	// Should map to "Q" button.
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Smell")
 	bool DoAccurateSmell();
 
-	UFUNCTION(BlueprintPure, Category = "PurrInPeril")
+	UFUNCTION(BlueprintPure, Category = "PurrInPeril|Smell")
 	bool CheckAccurateSmellValid();
 
 	UFUNCTION(Exec, BlueprintCallable, Category = "PurrInPeril")

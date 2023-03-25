@@ -76,8 +76,8 @@ void APurrInPerilMainPlayerController::BeginPlay()
     APurrInPerilAnimalPawn* LocalPawn = GetPawn<APurrInPerilAnimalPawn>();
     if (LocalPawn && LocalPawn->SmellDiscoverComponent)
     {
-        LocalPawn->SmellDiscoverComponent->OnAccurateSmellBegin.AddDynamic(this, &APurrInPerilMainPlayerController::ShowAccurateIndicatorWidget);
-        LocalPawn->SmellDiscoverComponent->OnAccurateSmellEnd.AddDynamic(this, &APurrInPerilMainPlayerController::HideAccurateIndicatorWidget);
+        LocalPawn->SmellDiscoverComponent->OnAccurateSmellBegin.AddDynamic(this, &APurrInPerilMainPlayerController::OnAccurateSmellBegin);
+        LocalPawn->SmellDiscoverComponent->OnAccurateSmellEnd.AddDynamic(this, &APurrInPerilMainPlayerController::OnAccurateSmellEnd);
     }
 }
 
@@ -98,8 +98,8 @@ void APurrInPerilMainPlayerController::EndPlay(const EEndPlayReason::Type EndPla
     APurrInPerilAnimalPawn* LocalPawn = GetPawn<APurrInPerilAnimalPawn>();
     if (LocalPawn && LocalPawn->SmellDiscoverComponent)
     {
-        LocalPawn->SmellDiscoverComponent->OnAccurateSmellBegin.RemoveDynamic(this, &APurrInPerilMainPlayerController::ShowAccurateIndicatorWidget);
-        LocalPawn->SmellDiscoverComponent->OnAccurateSmellEnd.RemoveDynamic(this, &APurrInPerilMainPlayerController::HideAccurateIndicatorWidget);
+        LocalPawn->SmellDiscoverComponent->OnAccurateSmellBegin.RemoveDynamic(this, &APurrInPerilMainPlayerController::OnAccurateSmellBegin);
+        LocalPawn->SmellDiscoverComponent->OnAccurateSmellEnd.RemoveDynamic(this, &APurrInPerilMainPlayerController::OnAccurateSmellEnd);
     }
     Super::EndPlay(EndPlayReason);
 }
@@ -166,8 +166,9 @@ bool APurrInPerilMainPlayerController::ActivateInteractableWidget(UPurrInPerilIn
             InteractingComponent = ComponentToOpenInteraction;
         }
     }
+    
+    PostActivateInteractableWidget(ComponentToOpenInteraction);
     // Do not create widget for task actor. It should create the widget before activation.
-
     return true;
 }
 
@@ -175,6 +176,7 @@ bool APurrInPerilMainPlayerController::DeactivateInteractableWidget(UPurrInPeril
 {
     if (!ComponentToCloseInteraction)
     {
+
         return false;
     }
 
@@ -191,12 +193,22 @@ bool APurrInPerilMainPlayerController::DeactivateInteractableWidget(UPurrInPeril
             {
                 UUserWidget* HoldingWidget = *HoldingWidgetPtr;
                 HoldingWidget->RemoveFromParent();
+
+                PostDeactivateInteractableWidget(ComponentToCloseInteraction, bClearInteractingComponent);
                 return true;
             }
         }
     }
 
     return false;
+}
+
+void APurrInPerilMainPlayerController::PostActivateInteractableWidget_Implementation(UPurrInPerilInteractableComponent* ComponentToOpenInteraction)
+{
+}
+
+void APurrInPerilMainPlayerController::PostDeactivateInteractableWidget_Implementation(UPurrInPerilInteractableComponent* ComponentToOpenInteraction, bool bClearInteractingComponent)
+{
 }
 
 void APurrInPerilMainPlayerController::OpenWidgetLockMovement(UUserWidget* UserWidget)
@@ -235,12 +247,12 @@ void APurrInPerilMainPlayerController::CloseWidgetUnlockMovement(UUserWidget* Us
     bIsInteractingWithObject = false;
 }
 
-void APurrInPerilMainPlayerController::ShowAccurateIndicatorWidget()
+void APurrInPerilMainPlayerController::OnAccurateSmellBegin_Implementation()
 {
 
 }
 
-void APurrInPerilMainPlayerController::HideAccurateIndicatorWidget()
+void APurrInPerilMainPlayerController::OnAccurateSmellEnd_Implementation()
 {
 
 }
