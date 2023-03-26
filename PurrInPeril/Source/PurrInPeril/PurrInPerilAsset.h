@@ -12,6 +12,7 @@ class AActor;
 class APurrInPerilTaskActorBase;
 class UUserWidget;
 class UPlayerMainPanelWidgetBase;
+class UMainMenuPanelWidgetBase;
 
 UCLASS(BlueprintType, Blueprintable)
 class PURRINPERIL_API UIndicateColorMapping : public UDataAsset
@@ -107,6 +108,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
 	TSubclassOf<UPlayerMainPanelWidgetBase> DefaultPlayerMainForegroundPanelWidgetClass;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	TSubclassOf<UMainMenuPanelWidgetBase> DefaultMainMenuPanelWidgetClass;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
 	TSubclassOf<UUserWidget> DefaultInteractTipsClass;

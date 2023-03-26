@@ -31,3 +31,19 @@ protected:
 	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 };
+
+/**
+*
+*/
+UCLASS(BlueprintType, Blueprintable)
+class PURRINPERIL_API UMainMenuPanelWidgetBase : public UUserWidget
+{
+	GENERATED_BODY()
+public:
+	UMainMenuPanelWidgetBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+protected:
+
+protected:
+
+};

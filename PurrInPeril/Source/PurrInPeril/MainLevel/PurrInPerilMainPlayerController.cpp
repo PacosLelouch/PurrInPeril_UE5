@@ -25,6 +25,7 @@ APurrInPerilMainPlayerController::APurrInPerilMainPlayerController(const FObject
 void APurrInPerilMainPlayerController::BeginPlay()
 {
     Super::BeginPlay();
+    IgnoreMoveInputStack = { false };
     //SetInputMode(FInputModeGameAndUI().SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways));//TEST
 
     if (const UUserWidgetClassSettings* UserWidgetClassSettings = UUserWidgetClassSettings::GetFromGameInstance(this))
@@ -52,6 +53,15 @@ void APurrInPerilMainPlayerController::BeginPlay()
             if (!CustomIndicatorPanelWidgetClass)
             {
                 CustomIndicatorPanelWidgetClass = UUserWidget::StaticClass();
+            }
+        }
+
+        if (!CustomMainMenuPanelWidgetClass)
+        {
+            CustomMainMenuPanelWidgetClass = UserWidgetClassSettings->DefaultMainMenuPanelWidgetClass;
+            if (!CustomMainMenuPanelWidgetClass)
+            {
+                CustomMainMenuPanelWidgetClass = UMainMenuPanelWidgetBase::StaticClass();
             }
         }
     }
@@ -83,6 +93,10 @@ void APurrInPerilMainPlayerController::BeginPlay()
 
 void APurrInPerilMainPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+    if (MainMenuPanelWidget)
+    {
+        MainMenuPanelWidget->RemoveFromParent();
+    }
     if (PlayerMainForegroundPanelWidget)
     {
         PlayerMainForegroundPanelWidget->RemoveFromParent();
@@ -218,10 +232,8 @@ void APurrInPerilMainPlayerController::OpenWidgetLockMovement(UUserWidget* UserW
         // 1. Deactivate player movement. 
         // 2. Open task widget.
         UserWidget->AddToViewport(WidgetLockMovementZOrder);
-        bLastIgnoreMoveInput = IsMoveInputIgnored();
-        SetIgnoreMoveInput(true);
-        SetIgnoreLookInput(true);
-        SetShowMouseCursor(true);
+        bool bLastIgnoreMoveInput = IsMoveInputIgnored();
+        PushIgnoreGameInput(bLastIgnoreMoveInput);
         DeactivateInteractableWidget(InteractingComponent, false);
         bIsInteractingWithObject = true;
     }
@@ -235,6 +247,42 @@ void APurrInPerilMainPlayerController::CloseWidgetUnlockMovement(UUserWidget* Us
         // 2. Close task widget.
         UserWidget->RemoveFromParent();
     }
+    PopIgnoreGameInput();
+    ActivateInteractableWidget(InteractingComponent);
+    bIsInteractingWithObject = false;
+}
+
+void APurrInPerilMainPlayerController::OpenMainMenu_Implementation()
+{
+    if (!MainMenuPanelWidget)
+    {
+        MainMenuPanelWidget = CreateWidget<UMainMenuPanelWidgetBase>(this, CustomMainMenuPanelWidgetClass);
+    }
+    MainMenuPanelWidget->AddToViewport(MainMenuPanelWidgetZOrder);
+    bool bLastIgnoreMoveInput = IsMoveInputIgnored();
+    PushIgnoreGameInput(bLastIgnoreMoveInput);
+}
+
+void APurrInPerilMainPlayerController::CloseMainMenu_Implementation()
+{
+    if (MainMenuPanelWidget)
+    {
+        MainMenuPanelWidget->RemoveFromParent();
+    }
+    PopIgnoreGameInput();
+}
+
+void APurrInPerilMainPlayerController::PushIgnoreGameInput(bool bIsGameInputIgnored)
+{
+    IgnoreMoveInputStack.Add(bIsGameInputIgnored);
+    SetIgnoreMoveInput(true);
+    SetIgnoreLookInput(true);
+    SetShowMouseCursor(true);
+}
+
+void APurrInPerilMainPlayerController::PopIgnoreGameInput()
+{
+    bool bLastIgnoreMoveInput = IgnoreMoveInputStack.Pop();
     SetIgnoreMoveInput(bLastIgnoreMoveInput);
     SetIgnoreLookInput(bLastIgnoreMoveInput);
     SetShowMouseCursor(bLastIgnoreMoveInput);
@@ -242,9 +290,7 @@ void APurrInPerilMainPlayerController::CloseWidgetUnlockMovement(UUserWidget* Us
     {
         UWidgetBlueprintLibrary::SetInputMode_GameOnly(this, true);
     }
-    bLastIgnoreMoveInput = IsMoveInputIgnored();
-    ActivateInteractableWidget(InteractingComponent);
-    bIsInteractingWithObject = false;
+    //bLastIgnoreMoveInput = IsMoveInputIgnored();
 }
 
 void APurrInPerilMainPlayerController::OnAccurateSmellBegin_Implementation()
