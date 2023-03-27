@@ -132,7 +132,7 @@ FPurrInPerilTaskNum UPurrInPerilTaskManagementSubsystem::GetTaskNumAndCompleteCo
     return Point;
 }
 
-int32 UPurrInPerilTaskManagementSubsystem::GetRemainingTaskIdentifierNotCompleted(TSet<FPurrInPerilTaskIdentifier>& OutRemainingTasks, TSet<FPurrInPerilTaskIdentifier> IgnoringTasks, AController* Controller) const
+int32 UPurrInPerilTaskManagementSubsystem::GetRemainingTaskIdentifierNotCompleted(TSet<FPurrInPerilTaskIdentifier>& OutRemainingTasks, const TSet<FPurrInPerilTaskIdentifier>& IgnoringTasks, AController* Controller) const
 {
     OutRemainingTasks.Empty(TaskActors.Num());
     int32 RemainingCount = TaskActors.Num();

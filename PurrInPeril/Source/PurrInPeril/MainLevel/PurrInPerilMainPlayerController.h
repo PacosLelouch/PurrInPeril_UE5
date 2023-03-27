@@ -132,10 +132,10 @@ public:
 	int32 InteractableWidgetZOrder = 4;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 IndicatorWidgetZOrder = 3;
+	int32 IndicatorWidgetZOrder = 2;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 WidgetLockMovementZOrder = 2;
+	int32 WidgetLockMovementZOrder = 3;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
 	int32 PlayerMainBackgroundPanelWidgetZOrder = 1;

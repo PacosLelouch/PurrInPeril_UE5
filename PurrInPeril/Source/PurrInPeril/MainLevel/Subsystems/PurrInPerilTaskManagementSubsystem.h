@@ -67,8 +67,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
 	FPurrInPerilTaskNum GetTaskNumAndCompleteCount(const FPurrInPerilTaskIdentifier& TaskIdentifier, AController* Controller) const;
 
-	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task")
-	int32 GetRemainingTaskIdentifierNotCompleted(TSet<FPurrInPerilTaskIdentifier>& OutRemainingTasks, TSet<FPurrInPerilTaskIdentifier> IgnoringTasks, AController* Controller) const;
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Task", meta = (AutoCreateRefTerm = "IgnoringTasks"))
+	int32 GetRemainingTaskIdentifierNotCompleted(TSet<FPurrInPerilTaskIdentifier>& OutRemainingTasks, const TSet<FPurrInPerilTaskIdentifier>& IgnoringTasks, AController* Controller) const;
 
 
 	UPROPERTY(BlueprintAssignable, Category = "PurrInPeril|Task")
