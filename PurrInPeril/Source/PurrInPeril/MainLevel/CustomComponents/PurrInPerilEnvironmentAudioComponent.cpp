@@ -29,6 +29,11 @@ void UPurrInPerilEnvironmentAudioComponent::BeginPlay()
 			SoundClassOverride = GameplayAudioSettings->InLevelAudioSettings.DefaultEnvironmentSoundClass;
 		}
 	}
+	// Need to play again since settings are changed.
+	if (IsActive())
+	{
+		Play();
+	}
 }
 
 void UPurrInPerilEnvironmentAudioComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
