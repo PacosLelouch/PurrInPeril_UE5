@@ -20,12 +20,12 @@ APurrInPerilMainPlayerController::APurrInPerilMainPlayerController(const FObject
     : Super(ObjectInitializer)
 {
     //bShowMouseCursor = true;
+    IgnoreMoveInputStack = { false };
 }
 
 void APurrInPerilMainPlayerController::BeginPlay()
 {
     Super::BeginPlay();
-    IgnoreMoveInputStack = { false };
     //SetInputMode(FInputModeGameAndUI().SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways));//TEST
 
     if (const UUserWidgetClassSettings* UserWidgetClassSettings = UUserWidgetClassSettings::GetFromGameInstance(this))
@@ -283,13 +283,14 @@ void APurrInPerilMainPlayerController::PushIgnoreGameInput(bool bIsGameInputIgno
 void APurrInPerilMainPlayerController::PopIgnoreGameInput()
 {
     bool bLastIgnoreMoveInput = IgnoreMoveInputStack.Pop();
-    SetIgnoreMoveInput(bLastIgnoreMoveInput);
-    SetIgnoreLookInput(bLastIgnoreMoveInput);
-    SetShowMouseCursor(bLastIgnoreMoveInput);
     if (!bLastIgnoreMoveInput)
     {
         UWidgetBlueprintLibrary::SetInputMode_GameOnly(this, true);
     }
+    // These functions are strange...
+    SetIgnoreMoveInput(false);
+    SetIgnoreLookInput(false);
+    SetShowMouseCursor(bLastIgnoreMoveInput);
     //bLastIgnoreMoveInput = IsMoveInputIgnored();
 }
 
