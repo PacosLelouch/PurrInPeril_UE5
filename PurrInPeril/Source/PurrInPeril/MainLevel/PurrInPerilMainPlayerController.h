@@ -10,6 +10,7 @@ class UUserWidget;
 class APurrInPerilTaskActorBase;
 class UPurrInPerilInteractableComponent;
 class UPlayerMainPanelWidgetBase;
+class UMainMenuPanelWidgetBase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPartOfTaskCompleteDynamicDelegate, APurrInPerilTaskActorBase*, TaskActor);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPartOfTaskResetDynamicDelegate, APurrInPerilTaskActorBase*, TaskActor);
@@ -58,6 +59,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
 	void CloseWidgetUnlockMovement(UUserWidget* UserWidget);
 
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PurrInPeril")
+	void OpenMainMenu();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PurrInPeril")
+	void CloseMainMenu();
+
+
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	void PushIgnoreGameInput(bool bIsGameInputIgnored);
+
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril")
+	void PopIgnoreGameInput();
+
+
 	// Callback OnAccurateSmellBegin.
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PurrInPeril")
 	void OnAccurateSmellBegin();
@@ -89,11 +105,19 @@ public:
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
 	UPlayerMainPanelWidgetBase* PlayerMainForegroundPanelWidget = nullptr;
 
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril|Widget")
+	UMainMenuPanelWidgetBase* MainMenuPanelWidget = nullptr;
+
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril|Widget")
 	TSubclassOf<UPlayerMainPanelWidgetBase> CustomPlayerMainBackgroundPanelWidgetClass;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril|Widget")
 	TSubclassOf<UPlayerMainPanelWidgetBase> CustomPlayerMainForegroundPanelWidgetClass;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "PurrInPeril|Widget")
+	TSubclassOf<UMainMenuPanelWidgetBase> CustomMainMenuPanelWidgetClass;
+
 
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "PurrInPeril")
 	UPurrInPerilInteractableComponent* InteractingComponent = nullptr;
@@ -108,16 +132,19 @@ public:
 	int32 InteractableWidgetZOrder = 4;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 IndicatorWidgetZOrder = 3;
+	int32 IndicatorWidgetZOrder = 2;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 WidgetLockMovementZOrder = 1;
+	int32 WidgetLockMovementZOrder = 3;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 PlayerMainBackgroundPanelWidgetZOrder = 0;
+	int32 PlayerMainBackgroundPanelWidgetZOrder = 1;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 PlayerMainForegroundPanelWidgetZOrder = 100;
+	int32 MainMenuPanelWidgetZOrder = 100;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
+	int32 PlayerMainForegroundPanelWidgetZOrder = 99;
 
 	UPROPERTY(BlueprintAssignable, Category = "PurrInPeril|Task")
 	FOnPartOfTaskCompleteDynamicDelegate OnPartOfTaskComplete;
@@ -125,5 +152,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "PurrInPeril|Task")
 	FOnPartOfTaskResetDynamicDelegate OnPartOfTaskReset;
 
-	bool bLastIgnoreMoveInput = false;
+protected:
+	TArray<bool> IgnoreMoveInputStack;
+	//bool bLastIgnoreMoveInput = false;
 };

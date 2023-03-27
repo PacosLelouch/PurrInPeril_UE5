@@ -28,3 +28,8 @@ void UPlayerMainPanelWidgetBase::NativeTick(const FGeometry& MyGeometry, float I
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 }
+
+UMainMenuPanelWidgetBase::UMainMenuPanelWidgetBase(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+}
