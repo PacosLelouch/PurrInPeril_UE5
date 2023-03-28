@@ -30,6 +30,19 @@ FLinearColor UIndicateColorMapping::GetColorFromMapping(TSubclassOf<AActor> InCl
 	return DefaultColor;
 }
 
+UTexture2D* UIndicateColorMapping::GetTextureFromMapping(TSubclassOf<AActor> InClass) const
+{
+	for (TSubclassOf<AActor> TempClass = InClass; TempClass != AActor::StaticClass(); TempClass = TempClass->GetSuperClass())
+	{
+		const TSoftObjectPtr<UTexture2D>* TexturePtr = TextureMapping.Find(TempClass);
+		if (TexturePtr)
+		{
+			return TexturePtr->LoadSynchronous();
+		}
+	}
+	return DefaultTexture.LoadSynchronous();
+}
+
 const UTaskIdentifierMapping* UTaskIdentifierMapping::GetFromGameInstance(UObject* WorldContextObject)
 {
 	if (UWorld* World = WorldContextObject->GetWorld())

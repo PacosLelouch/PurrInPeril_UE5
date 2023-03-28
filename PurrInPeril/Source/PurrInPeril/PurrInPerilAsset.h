@@ -8,6 +8,7 @@
 #include "PurrInPerilCommon.h"
 #include "PurrInPerilAsset.generated.h"
 
+class UTexture2D;
 class AActor;
 class APurrInPerilTaskActorBase;
 class UUserWidget;
@@ -24,13 +25,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Widget")
 	FLinearColor GetColorFromMapping(TSubclassOf<AActor> InClass) const;
 
+	UFUNCTION(BlueprintCallable, Category = "PurrInPeril|Widget")
+	UTexture2D* GetTextureFromMapping(TSubclassOf<AActor> InClass) const;
+
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
 	FLinearColor DefaultColor = FLinearColor::Black;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	TSoftObjectPtr<UTexture2D> DefaultTexture = nullptr;
 
 protected:
 
 	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget")
 	TMap<TSubclassOf<AActor>, FLinearColor> Mapping;
+
+	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget")
+	TMap<TSubclassOf<AActor>, TSoftObjectPtr<UTexture2D>> TextureMapping;
 };
 
 UCLASS(BlueprintType, Blueprintable)
@@ -45,6 +55,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
 	FPurrInPerilTaskIdentifier DefaultTaskIdentifier;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Task")
+	TSet<FPurrInPerilTaskIdentifier> FinalTasks;
 
 protected:
 

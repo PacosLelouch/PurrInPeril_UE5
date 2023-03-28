@@ -129,16 +129,16 @@ public:
 	TSubclassOf<UUserWidget> CustomIndicatorPanelWidgetClass;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 InteractableWidgetZOrder = 4;
+	int32 InteractableWidgetZOrder = 12;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
 	int32 IndicatorWidgetZOrder = 2;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 WidgetLockMovementZOrder = 3;
+	int32 WidgetLockMovementZOrder = 11;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
-	int32 PlayerMainBackgroundPanelWidgetZOrder = 1;
+	int32 PlayerMainBackgroundPanelWidgetZOrder = 10;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "PurrInPeril|Widget")
 	int32 MainMenuPanelWidgetZOrder = 100;
