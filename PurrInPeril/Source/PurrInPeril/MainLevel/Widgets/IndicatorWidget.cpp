@@ -261,10 +261,17 @@ void UIndicatorPanelWidget::NativeTick(const FGeometry& MyGeometry, float InDelt
                 for (UIndicatorWidget* IndicatorWidget : AccurateIndicators)
                 {
                     AActor* TargetActor = IndicatorWidget->GetTargetActor();
-                    if (!IsValid(TargetActor) && UndistributedOwnerIt)
+                    if (!ProducerOwners.Contains(TargetActor) || !IsValid(TargetActor))
                     {
-                        TargetActor = *UndistributedOwnerIt;
-                        ++UndistributedOwnerIt;
+                        if (UndistributedOwnerIt)
+                        {
+                            TargetActor = *UndistributedOwnerIt;
+                            ++UndistributedOwnerIt;
+                        }
+                        else
+                        {
+                            TargetActor = nullptr;
+                        }
                     }
 
                     // Update per indicator.
