@@ -23,11 +23,26 @@ public:
 	UFUNCTION(BlueprintSetter)
 	void SetTargetLocation(FVector NewValue);
 
+	UFUNCTION(BlueprintGetter)
+	FVector GetTargetLocation() const { return TargetLocation; }
+
 	UFUNCTION(BlueprintSetter)
 	void SetTargetActor(AActor* NewActor);
 
+	UFUNCTION(BlueprintGetter)
+	AActor* GetTargetActor() const { return TargetActor; }
+
 	UFUNCTION(BlueprintSetter)
 	void SetIndicatorColor(FLinearColor NewValue);
+
+	UFUNCTION(BlueprintGetter)
+	FLinearColor GetIndicatorColor() const { return IndicatorColor; }
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintPure, Category = "PurrInPeril|Widget")
+	bool IsBlocked() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "PurrInPeril|Widget")
+	void UpdateIndicatorText();
 
 protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -43,22 +58,22 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget", Meta = (ClampMin = 0, ClampMax = 1))
 	float OutsideScreenScale = 0.3f;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, BlueprintSetter = "SetTargetActor", Category = "PurrInPeril|Widget")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, BlueprintSetter = "SetTargetActor", BlueprintGetter = "GetTargetActor", Category = "PurrInPeril|Widget")
 	AActor* TargetActor = nullptr;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, BlueprintSetter = "SetTargetLocation", Category = "PurrInPeril|Widget")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, BlueprintSetter = "SetTargetLocation", BlueprintGetter = "GetTargetLocation", Category = "PurrInPeril|Widget")
 	FVector TargetLocation = FVector::UpVector * 200.0f;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, BlueprintSetter = "SetIndicatorColor", Category = "PurrInPeril|Widget")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, BlueprintSetter = "SetIndicatorColor", BlueprintGetter = "GetIndicatorColor", Category = "PurrInPeril|Widget")
 	FLinearColor IndicatorColor = FLinearColor::Blue;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "PurrInPeril|Widget")
 	bool bIsActualLocationOutsideScreen = true;
 
-	FTransform CameraTransform;
+	//FTransform CameraTransform;
 
 protected:
-	void UpdateCameraTransform();
+	//void UpdateCameraTransform();
 
 	FVector2D CalculateIndicatorScreenPos(FVector Destination, bool& bOutIsOutsideScreen);
 
@@ -67,4 +82,42 @@ protected:
 	virtual void NativeConstruct() override;
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+};
+
+
+/**
+*
+*/
+UCLASS(BlueprintType, Blueprintable)
+class PURRINPERIL_API UIndicatorPanelWidget : public UUserWidget
+{
+	GENERATED_BODY()
+public:
+	UIndicatorPanelWidget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+protected:
+	virtual void NativePreConstruct() override;
+
+	virtual void NativeConstruct() override;
+
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "PurrInPeril|Widget")
+	FLinearColor GetColorAndOpacityFromSingleProducer(UPurrInPerilSmellProduceComponent* Producer);
+
+protected:
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UCanvasPanel* CanvasPanel;
+
+	UPROPERTY(BlueprintReadOnly, Category = "PurrInPeril|Widget")
+	TSet<UIndicatorWidget*> AccurateIndicators;
+
+	//UPROPERTY(BlueprintReadOnly, Category = "PurrInPeril|Widget")
+	//TMap<AActor*, UIndicatorWidget*> StatisticActorsToIndicators;
+
+	//UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	//bool bCacheActorToIndicator = true;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "PurrInPeril|Widget")
+	TSubclassOf<UIndicatorWidget> IndicatorWidgetClass;
 };
