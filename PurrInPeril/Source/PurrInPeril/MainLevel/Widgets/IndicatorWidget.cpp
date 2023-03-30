@@ -20,10 +20,29 @@ void UIndicatorWidget::SetTargetLocation(FVector NewValue)
     FVector2D ScreenPos = CalculateIndicatorScreenPos(Location, bIsActualLocationOutsideScreen);
     //UE_LOG(LogTemp, Log, TEXT("[%s] Test location to screen pos: <%s> -> <%s>"), *GetName(), *Location.ToString(), *ScreenPos.ToString());
 
-    IndicatorIcon->SetRenderScale(
-        bIsActualLocationOutsideScreen ?
-        FVector2D(OutsideScreenScale, OutsideScreenScale) :
-        FVector2D(1.0f, 1.0f));
+    bool bNearest = false;
+    if (APurrInPerilAnimalPawn* PlayerPawn = GetOwningPlayer()->GetPawn<APurrInPerilAnimalPawn>())
+    {
+        if (PlayerPawn->SmellDiscoverComponent && 
+            PlayerPawn->SmellDiscoverComponent->PerceivedNearestSmellProducer &&
+            PlayerPawn->SmellDiscoverComponent->PerceivedNearestSmellProducer->GetOwner() == TargetActor)
+        {
+            bNearest = true;
+        }
+    }
+
+    if (bNearest)
+    {
+        IndicatorIcon->SetRenderScale(
+            FVector2D(NearestScreenScale, NearestScreenScale));
+    }
+    else
+    {
+        IndicatorIcon->SetRenderScale(
+            bIsActualLocationOutsideScreen ?
+            FVector2D(OutsideScreenScale, OutsideScreenScale) :
+            FVector2D(1.0f, 1.0f));
+    }
 
     auto* CanvasSlot = Cast<UCanvasPanelSlot>(Slot);
     if (CanvasSlot)

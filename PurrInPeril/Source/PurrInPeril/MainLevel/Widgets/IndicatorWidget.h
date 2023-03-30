@@ -59,8 +59,11 @@ protected:
 	float LongAxisPercent = 0.85f;
 	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget", Meta = (ClampMin = 0, ClampMax = 1))
 	float MinorAixsPercent = 0.85f;
+
 	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget", Meta = (ClampMin = 0, ClampMax = 1))
 	float OutsideScreenScale = 0.3f;
+	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget", Meta = (ClampMin = 0, ClampMax = 1))
+	float NearestScreenScale = 1.5f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, BlueprintSetter = "SetTargetActor", BlueprintGetter = "GetTargetActor", Category = "PurrInPeril|Widget")
 	AActor* TargetActor = nullptr;
