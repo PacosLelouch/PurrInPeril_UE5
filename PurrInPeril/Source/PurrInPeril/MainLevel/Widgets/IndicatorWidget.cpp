@@ -52,8 +52,7 @@ void UIndicatorWidget::SetTargetActor(AActor* NewActor)
 void UIndicatorWidget::SetIndicatorColor(FLinearColor NewValue)
 {
     IndicatorColor = NewValue;
-    // We can bind the property directly.
-    //IndicatorIcon->SetColorAndOpacity(IndicatorColor);
+    IndicatorIcon->SetColorAndOpacity(IndicatorColor);
 }
 
 bool UIndicatorWidget::IsBlocked_Implementation() const
@@ -64,6 +63,11 @@ bool UIndicatorWidget::IsBlocked_Implementation() const
 void UIndicatorWidget::UpdateIndicatorText_Implementation()
 {
 
+}
+
+FSlateBrush UIndicatorWidget::GetIndicatorIconBrush_Implementation() const
+{
+    return FSlateBrush();
 }
 
 //void UIndicatorWidget::UpdateCameraTransform()
@@ -279,6 +283,7 @@ void UIndicatorPanelWidget::NativeTick(const FGeometry& MyGeometry, float InDelt
                     IndicatorWidget->SetTargetActor(TargetActor);
                     if (IsValid(TargetActor) && ProducerOwners.Contains(TargetActor))
                     {
+                        IndicatorWidget->IndicatorIcon->SetBrush(IndicatorWidget->GetIndicatorIconBrush());
                         IndicatorWidget->SetIndicatorColor(GetColorAndOpacityFromSingleProducer(ISmellProducerInterface::Execute_GetSmellProduceComponent(TargetActor)));
                         IndicatorWidget->UpdateIndicatorText();
                         if (!IsValid(PlayerController->InteractingComponent) || PlayerController->InteractingComponent->GetOwner() != TargetActor)

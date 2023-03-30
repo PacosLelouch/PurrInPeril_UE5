@@ -44,12 +44,16 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "PurrInPeril|Widget")
 	void UpdateIndicatorText();
 
-protected:
+	UFUNCTION(BlueprintNativeEvent, BlueprintPure, Category = "PurrInPeril|Widget")
+	FSlateBrush GetIndicatorIconBrush() const;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UCanvasPanel* IndicatorPanel;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UImage* IndicatorIcon;
+
+protected:
 
 	UPROPERTY(EditAnywhere, Category = "PurrInPeril|Widget", Meta = (ClampMin = 0, ClampMax = 1))
 	float LongAxisPercent = 0.85f;
