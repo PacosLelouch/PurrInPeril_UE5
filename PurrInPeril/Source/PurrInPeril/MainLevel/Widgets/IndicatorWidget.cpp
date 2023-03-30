@@ -200,6 +200,7 @@ void UIndicatorPanelWidget::NativeConstruct()
 
 void UIndicatorPanelWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
+    QUICK_SCOPE_CYCLE_COUNTER(Stat_IndicatorPanelWidget);
     Super::NativeTick(MyGeometry, InDeltaTime);
 
     for (UIndicatorWidget* Indicator : AccurateIndicators)
